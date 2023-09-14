@@ -2,6 +2,7 @@ import React, { KeyboardEvent, useRef } from "react";
 
 type FullInputType = {
   addTask:(title: string) => void
+  error: boolean
 }
 export const FullInput = (props: FullInputType) => {
   let onChangeRef = useRef<HTMLInputElement>(null)
@@ -26,8 +27,10 @@ export const FullInput = (props: FullInputType) => {
       <input
         onKeyPress={onKeyPressHandler}
         ref={onChangeRef}
+        className={props.error ? 'error' : ''}
       />
       <button onClick={onClickHandler}>+</button>
+      {props.error && <div className={'error-message'}>Title is required</div>}
     </div>
   )
 }
