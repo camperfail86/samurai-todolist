@@ -1,36 +1,44 @@
-import React, { KeyboardEvent, useRef } from "react";
+import React, {ChangeEvent, KeyboardEvent, useRef, useState} from "react";
 
 type FullInputType = {
-  addTask:(title: string) => void
-  error: boolean
+    addTask: (todolistId: string, title: string) => void
+    todolistId: string
 }
 export const FullInput = (props: FullInputType) => {
-  let onChangeRef = useRef<HTMLInputElement>(null)
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      if (onChangeRef.current) {
-        props.addTask(onChangeRef.current.value);
-        onChangeRef.current.value = ''
-      }
+    const [error, setError] = useState(false)
+    const [title, setTitle] = useState('')
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            if (title.trim() !== '') {
+                setError(false)
+                props.addTask(props.todolistId, title);
+                setTitle('')
+            } else {
+                setError(true)
+            }
+        }
     }
-  }
 
-  const onClickHandler = () => {
-    if (onChangeRef.current) {
-      props.addTask(onChangeRef.current.value);
-      onChangeRef.current.value = ''
+    const onClickHandler = () => {
+        if (title.trim() !== '') {
+            setError(false)
+            props.addTask(props.todolistId, title);
+            setTitle('')
+        } else {
+            setError(true)
+        }
     }
-  }
 
-  return (
-    <div>
-      <input
-        onKeyPress={onKeyPressHandler}
-        ref={onChangeRef}
-        className={props.error ? 'error' : ''}
-      />
-      <button onClick={onClickHandler}>+</button>
-      {props.error && <div className={'error-message'}>Title is required</div>}
-    </div>
-  )
+    return (
+        <div>
+            <input
+                value={title}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)}
+                onKeyPress={onKeyPressHandler}
+                className={error ? 'error' : ''}
+            />
+            <button onClick={onClickHandler}>+</button>
+            {error ? <div className={'error-message'}>Title is required</div> : ''}
+        </div>
+    )
 }
