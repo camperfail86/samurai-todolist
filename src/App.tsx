@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import Todolist from "./components/Todolist";
 import {v1} from "uuid";
+import {FullInput} from "./components/FullInput";
 
 export type FilterValuesType = 'all' | 'completed' | 'active'
 export type todolistsType = {
@@ -48,14 +49,25 @@ function App() {
 
     const addTask = (todolistId: string, title: string) => {
         if (title.trim() !== '') {
-          let task = {id: v1(), title: title, isDone: false};
-          let newTasks = [task, ...tasks[todolistId]];
-          setTasks({...tasks, [todolistId]: newTasks});
+            let task = {id: v1(), title: title, isDone: false};
+            let newTasks = [task, ...tasks[todolistId]];
+            setTasks({...tasks, [todolistId]: newTasks});
+        }
+    }
+
+    const addTodolist = (todolistId: string, title: string) => {
+        if (title.trim() !== '') {
+            let todolistId = v1();
+            let newTodolist: todolistsType = {id: todolistId, title: title, filter: 'all'};
+            setTodolists([...todolists, newTodolist]);
+            setTasks({...tasks, [todolistId]: []});
         }
     }
 
     const changeFilter = (todolistId: string, value: FilterValuesType) => {
-        setTodolists(todolists.map(td => { return (td.id === todolistId ? {...td, filter: value} : {...td}) }))
+        setTodolists(todolists.map(td => {
+            return (td.id === todolistId ? {...td, filter: value} : {...td})
+        }))
     }
 
     const deleteTodolist = (todolistId: string) => {
@@ -65,31 +77,38 @@ function App() {
 
     return (
         <div className="App">
-            {todolists.map(td => {
 
-                let tasksForTodolist = tasks[td.id];
-                if (td.filter === "active") {
-                    tasksForTodolist = tasksForTodolist.filter(t => t.isDone === false);
-                }
-                if (td.filter === "completed") {
-                    tasksForTodolist = tasksForTodolist.filter(t => t.isDone === true);
-                }
+            <FullInput  todolistId={v1()} callback={addTodolist} />
 
-                return (
-                    <div className='todolist' key={td.id}>
-                        <h3>{td.title} <button onClick={() => deleteTodolist(td.id)}>x</button></h3>
-                        <Todolist
-                            addTask={addTask}
-                            changeIsDone={changeIsDone}
-                            tasks={tasksForTodolist}
-                            changeFilter={changeFilter}
-                            removeTask={removeTask}
-                            filter={td.filter}
-                            todolistId={td.id}
-                        />
-                    </div>
-                )
-            })}
+            <div className="todolists">
+                {todolists.map(td => {
+
+                    let tasksForTodolist = tasks[td.id];
+                    if (td.filter === "active") {
+                        tasksForTodolist = tasksForTodolist.filter(t => t.isDone === false);
+                    }
+                    if (td.filter === "completed") {
+                        tasksForTodolist = tasksForTodolist.filter(t => t.isDone === true);
+                    }
+
+                    return (
+                        <div className='todolist' key={td.id}>
+                            <h3>{td.title}
+                                <button onClick={() => deleteTodolist(td.id)}>x</button>
+                            </h3>
+                            <Todolist
+                                addTask={addTask}
+                                changeIsDone={changeIsDone}
+                                tasks={tasksForTodolist}
+                                changeFilter={changeFilter}
+                                removeTask={removeTask}
+                                filter={td.filter}
+                                todolistId={td.id}
+                            />
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useRef, useState} from "react";
 
 type FullInputType = {
-    addTask: (todolistId: string, title: string) => void
+    callback: (todolistId: string, title: string) => void
     todolistId: string
 }
 export const FullInput = (props: FullInputType) => {
@@ -11,7 +11,7 @@ export const FullInput = (props: FullInputType) => {
         if (e.key === 'Enter') {
             if (title.trim() !== '') {
                 setError(false)
-                props.addTask(props.todolistId, title);
+                props.callback(props.todolistId, title);
                 setTitle('')
             } else {
                 setError(true)
@@ -22,7 +22,7 @@ export const FullInput = (props: FullInputType) => {
     const onClickHandler = () => {
         if (title.trim() !== '') {
             setError(false)
-            props.addTask(props.todolistId, title);
+            props.callback(props.todolistId, title);
             setTitle('')
         } else {
             setError(true)

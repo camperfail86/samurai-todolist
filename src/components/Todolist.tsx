@@ -35,7 +35,7 @@ function Todolist(props: PropsType) {
     return (
         <div>
             <FullInput todolistId={props.todolistId}
-                       addTask={props.addTask}/>
+                       callback={props.addTask}/>
             <ul ref={listRef}>
                 {
                     props.tasks.map(t => {
