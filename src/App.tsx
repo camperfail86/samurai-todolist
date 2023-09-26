@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {FocusEvent, useState} from 'react';
 import './App.css';
 import Todolist from "./components/Todolist";
 import {v1} from "uuid";
@@ -55,7 +55,7 @@ function App() {
         }
     }
 
-    const addTodolist = (todolistId: string, title: string) => {
+    const addTodolist = (title: string) => {
         if (title.trim() !== '') {
             let todolistId = v1();
             let newTodolist: todolistsType = {id: todolistId, title: title, filter: 'all'};
@@ -75,10 +75,18 @@ function App() {
         setTodolists(filteredTodo)
     }
 
+    const editSpan = (title: string, todolistId: string, taskId: string) => {
+        let newTasks = {
+            ...tasks,
+            [todolistId]: tasks[todolistId].map(t => t.id === taskId ? {...t, title} : t)
+        }
+        setTasks(newTasks)
+    }
+
     return (
         <div className="App">
 
-            <FullInput  todolistId={v1()} callback={addTodolist} />
+            <FullInput callback={addTodolist} />
 
             <div className="todolists">
                 {todolists.map(td => {
@@ -97,6 +105,7 @@ function App() {
                                 <button onClick={() => deleteTodolist(td.id)}>x</button>
                             </h3>
                             <Todolist
+                                editSpan={editSpan}
                                 addTask={addTask}
                                 changeIsDone={changeIsDone}
                                 tasks={tasksForTodolist}
