@@ -1,8 +1,9 @@
-import React, {FocusEvent, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Todolist from "./components/Todolist";
 import {v1} from "uuid";
 import {FullInput} from "./components/FullInput";
+import {EditableSpan} from "./components/EditableSpan";
 
 export type FilterValuesType = 'all' | 'completed' | 'active'
 export type todolistsType = {
@@ -72,6 +73,7 @@ function App() {
 
     const deleteTodolist = (todolistId: string) => {
         let filteredTodo = todolists.filter(td => td.id !== todolistId)
+        delete tasks[todolistId]
         setTodolists(filteredTodo)
     }
 
@@ -83,10 +85,15 @@ function App() {
         setTasks(newTasks)
     }
 
+    const editSpanTodo = (title: string, todolistId: string) => {
+        let newTodolists = todolists.map(td => td.id === todolistId ? {...td, title} : td)
+        setTodolists(newTodolists)
+    }
+
     return (
         <div className="App">
 
-            <FullInput callback={addTodolist} />
+            <FullInput callback={addTodolist}/>
 
             <div className="todolists">
                 {todolists.map(td => {
@@ -99,11 +106,17 @@ function App() {
                         tasksForTodolist = tasksForTodolist.filter(t => t.isDone === true);
                     }
 
+                    const onChangeTitleTodo = (title: string) => {
+                        editSpanTodo(title, td.id)
+                    }
+
                     return (
                         <div className='todolist' key={td.id}>
-                            <h3>{td.title}
+                            <h3>
+                                <EditableSpan title={td.title} editSpan={onChangeTitleTodo}/>
                                 <button onClick={() => deleteTodolist(td.id)}>x</button>
                             </h3>
+
                             <Todolist
                                 editSpan={editSpan}
                                 addTask={addTask}

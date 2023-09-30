@@ -1,4 +1,4 @@
-import React, {FocusEvent, useState} from "react";
+import React from "react";
 import {FilterValuesType} from "../App";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {FullInput} from "./FullInput";
@@ -45,15 +45,16 @@ function Todolist(props: PropsType) {
                     props.tasks.map(t => {
                         const onClickHandler = () => props.removeTask(props.todolistId, t.id)
                         const onChangeHandler = () => props.changeIsDone(props.todolistId, t.id)
+
+                        const onChangeTitle = (title: string) => {
+                            props.editSpan(title, props.todolistId, t.id)
+                        }
+
                         return <li key={t.id}>
                             <input type="checkbox" checked={t.isDone} onChange={onChangeHandler}/>
                             <EditableSpan
-                                todolistId={props.todolistId}
-                                taskId={t.id}
                                 title={t.title}
-                                editSpan={props.editSpan}/>
-                            {/*// editMode={editMode}*/}
-                            {/*// onDblCLick={editSpanCLick}*/}
+                                editSpan={onChangeTitle}/>
                             <button onClick={onClickHandler}>x</button>
                         </li>
                     })

@@ -1,18 +1,14 @@
 import React, {useState, FocusEvent, ChangeEvent} from "react";
 
 type editableSpanProps = {
-    // onDblCLick: () => void
     title: string
-    // editMode: boolean
-    editSpan: (title: string, todolistId: string, taskId: string)=>void
-    taskId: string
-    todolistId: string
+    editSpan: (title: string)=>void
 }
 export const  EditableSpan = (props: editableSpanProps) => {
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState('')
     const editSpanCLick = (e: FocusEvent<HTMLInputElement>) => {
-        props.editSpan(e.currentTarget.value, props.todolistId, props.taskId)
+        props.editSpan(e.currentTarget.value)
         setEditMode(false)
     }
     const onDblClick = () => {
