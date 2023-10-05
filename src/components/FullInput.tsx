@@ -1,6 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useRef, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import todolist from "./Todolist";
 
 const inputStyle = {
     maxHeight: '25px',
@@ -46,12 +47,6 @@ export const FullInput = (props: FullInputType) => {
 
     return (
         <div>
-            {/*<input*/}
-            {/*    value={title}*/}
-            {/*    onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)}*/}
-            {/*    onKeyPress={onKeyPressHandler}*/}
-            {/*    className={error ? 'error' : ''}*/}
-            {/*/>*/}
             <TextField id="outlined-basic"
                        label={error ? "Введите текст" : "Писать тут"}
                        variant="outlined"
@@ -62,9 +57,7 @@ export const FullInput = (props: FullInputType) => {
                        helperText={error ? "Title is required" : ""}
                        size="small"
             />
-            {/*<button onClick={onClickHandler}>+</button>*/}
             <Button style={btnStyle} onClick={onClickHandler} variant="contained">+</Button>
-            {/*{error ? <div className={'error-message'}></div> : ''}*/}
         </div>
     )
 }
