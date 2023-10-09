@@ -11,12 +11,9 @@ export const TodolistReducer = (state: TodolistStateType, action: TodolistAction
     switch (action.type) {
         case 'ADD-TODOLIST': {
             if (action.payload.title.trim() !== '') {
-                console.log(state)
                 let newTodolist: todolistsType = {id: action.payload.todolistId, title: action.payload.title, filter: 'all'};
                 let copyState = [...state, newTodolist]
-                console.log(copyState)
                 return copyState
-                // setTasks({...tasks, [todolistId]: []});
             } else return state
         }
         case 'CHANGE-FILTER': {
