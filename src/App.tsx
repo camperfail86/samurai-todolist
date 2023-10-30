@@ -82,6 +82,8 @@ function App() {
         dispatch(editSpanTodoAC(title, todolistId))
     }
 
+    console.log('app render')
+
     return (
         <div className="App">
             <Box sx={{flexGrow: 1}}>
@@ -109,15 +111,6 @@ function App() {
                 </Grid>
                 <Grid container spacing={2}>
                     {todolists.map(td => {
-
-                        // let tasksForTodolist = tasks[td.id];
-                        // if (td.filter === "active") {
-                        //     tasksForTodolist = tasksForTodolist.filter(t => t.isDone === false);
-                        // }
-                        // if (td.filter === "completed") {
-                        //     tasksForTodolist = tasksForTodolist.filter(t => t.isDone === true);
-                        // }
-
                         const onChangeTitleTodo = (title: string) => {
                             editSpanTodo(title, td.id)
                         }
