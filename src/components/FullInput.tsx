@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import todolist from "./Todolist";
@@ -20,7 +20,7 @@ const btnStyle = {
 type FullInputType = {
     callback: (title: string) => void
 }
-export const FullInput = (props: FullInputType) => {
+export const FullInput = memo((props: FullInputType) => {
     const [error, setError] = useState(false)
     const [title, setTitle] = useState('')
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -60,4 +60,4 @@ export const FullInput = (props: FullInputType) => {
             <Button style={btnStyle} onClick={onClickHandler} variant="contained">+</Button>
         </div>
     )
-}
+})

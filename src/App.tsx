@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react';
+import React, {useCallback, useReducer} from 'react';
 import './App.css';
 import Todolist from "./components/Todolist";
 import {v1} from "uuid";
@@ -50,37 +50,37 @@ export type TaskType = {
 }
 export type TasksType = Record<string, TaskType[]>
 
-let todolistID1 = v1();
-let todolistID2 = v1();
+// let todolistID1 = v1();
+// let todolistID2 = v1();
 function App() {
     const todolists = useSelector<AppStoreType, Array<TodolistsType>>((state) => state.todolists)
     const dispatch = useDispatch()
 
 
-    const changeIsDone = (todolistId: string, id: string) => {
+    const changeIsDone = useCallback((todolistId: string, id: string) => {
         dispatch(changeIsDoneAC(todolistId, id))
-    }
+    }, [dispatch])
 
-    const addTodolist = (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         let todolistId = v1();
         dispatch(addTodolistAC(todolistId, title))
-    }
+    }, [dispatch])
 
-    const changeFilter = (todolistId: string, value: FilterValuesType) => {
+    const changeFilter = useCallback((todolistId: string, value: FilterValuesType) => {
         dispatch(changeFilterAC(todolistId, value))
-    }
+    },[dispatch])
 
-    const deleteTodolist = (todolistId: string) => {
+    const deleteTodolist = useCallback((todolistId: string) => {
         dispatch(deleteTodolistAC(todolistId))
-    }
+    }, [dispatch])
 
     // const editSpan = (title: string, todolistId: string, taskId: string) => {
     //     dispatch(editSpanTaskAC(title, todolistId, taskId))
     // }
 
-    const editSpanTodo = (title: string, todolistId: string) => {
+    const editSpanTodo = useCallback((title: string, todolistId: string) => {
         dispatch(editSpanTodoAC(title, todolistId))
-    }
+    }, [])
 
     console.log('app render')
 

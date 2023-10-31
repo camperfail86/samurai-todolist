@@ -1,11 +1,11 @@
-import React, {useState, FocusEvent, ChangeEvent} from "react";
+import React, {useState, FocusEvent, ChangeEvent, memo} from "react";
 import TextField from '@mui/material/TextField';
 
 type editableSpanProps = {
     title: string
     editSpan: (title: string)=>void
 }
-export const  EditableSpan = (props: editableSpanProps) => {
+export const  EditableSpan = memo((props: editableSpanProps) => {
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState('')
     const editSpanCLick = (e: FocusEvent<HTMLInputElement>) => {
@@ -33,4 +33,4 @@ export const  EditableSpan = (props: editableSpanProps) => {
             />
          : <span onDoubleClick={onDblClick}>{props.title}</span>
     )
-}
+})
