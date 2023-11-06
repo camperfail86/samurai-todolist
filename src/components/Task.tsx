@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {editSpanTaskAC, removeTaskAC} from "../reducers/TaskReducer";
 import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "./EditableSpan";
@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {TaskType} from "../App";
 import {useDispatch} from "react-redux";
+import {ButtonDelete} from "./ButtonDelete";
 
 export type TaskPropsType = {
     task: TaskType
@@ -15,12 +16,12 @@ export type TaskPropsType = {
 
 export const Task = memo(({task, changeIsDone, todolistId}: TaskPropsType) => {
     const dispatch = useDispatch()
-    const onClickHandler = () => dispatch(removeTaskAC(todolistId, task.id))
-    const onChangeHandler = () => changeIsDone(todolistId, task.id)
+    const onClickHandler = useCallback(() => dispatch(removeTaskAC(todolistId, task.id)), [task.id,dispatch])
+    const onChangeHandler = useCallback(() => changeIsDone(todolistId, task.id), [task.id,changeIsDone])
 
-    const onChangeTitle = (title: string) => {
+    const onChangeTitle = useCallback((title: string) => {
         dispatch(editSpanTaskAC(title, todolistId, task.id))
-    }
+    },[task.id, dispatch])
 
     return <li key={task.id}>
         <Checkbox size={"small"}
@@ -30,8 +31,9 @@ export const Task = memo(({task, changeIsDone, todolistId}: TaskPropsType) => {
         <EditableSpan
             title={task.title}
             editSpan={onChangeTitle}/>
-        <IconButton onClick={onClickHandler} aria-label="delete" size="small">
-            <DeleteIcon fontSize="small" />
-        </IconButton>
+        <ButtonDelete callback={onClickHandler}/>
+        {/*<IconButton onClick={onClickHandler} aria-label="delete" size="small">*/}
+        {/*    <DeleteIcon fontSize="small" />*/}
+        {/*</IconButton>*/}
     </li>
 });

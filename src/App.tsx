@@ -16,19 +16,14 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import Grid from "@mui/material/Grid";
 import {
-    addTodolistAC,
+    addTodolistAC, AddTodolistType,
     changeFilterAC,
     deleteTodolistAC,
     editSpanTodoAC,
     TodolistReducer
 } from "./reducers/TodolistReducer";
 import {
-    addTaskAC,
-    // addTasksArrayNullAC,
     changeIsDoneAC,
-    editSpanTaskAC,
-    removeTaskAC,
-    TaskReducer
 } from "./reducers/TaskReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "./store/store";
@@ -50,12 +45,9 @@ export type TaskType = {
 }
 export type TasksType = Record<string, TaskType[]>
 
-// let todolistID1 = v1();
-// let todolistID2 = v1();
 function App() {
     const todolists = useSelector<AppStoreType, Array<TodolistsType>>((state) => state.todolists)
     const dispatch = useDispatch()
-
 
     const changeIsDone = useCallback((todolistId: string, id: string) => {
         dispatch(changeIsDoneAC(todolistId, id))
@@ -74,15 +66,9 @@ function App() {
         dispatch(deleteTodolistAC(todolistId))
     }, [dispatch])
 
-    // const editSpan = (title: string, todolistId: string, taskId: string) => {
-    //     dispatch(editSpanTaskAC(title, todolistId, taskId))
-    // }
-
     const editSpanTodo = useCallback((title: string, todolistId: string) => {
         dispatch(editSpanTodoAC(title, todolistId))
-    }, [])
-
-    console.log('app render')
+    }, [dispatch])
 
     return (
         <div className="App">
@@ -111,34 +97,33 @@ function App() {
                 </Grid>
                 <Grid container spacing={2}>
                     {todolists.map(td => {
-                        const onChangeTitleTodo = (title: string) => {
-                            editSpanTodo(title, td.id)
-                        }
+                        // const onChangeTitleTodo = (title: string) => {
+                        //     editSpanTodo(title, td.id)
+                        // }
 
                         return (
-                            <Grid item xs={3.1}>
+                            <Grid item xs={3.1} key={td.id}>
                                 <Paper style={paperStyle}>
-                                    <div className='todolist' key={td.id}>
-                                        <h3>
-                                            <EditableSpan title={td.title} editSpan={onChangeTitleTodo}/>
-                                            {/*<button onClick={() => deleteTodolist(td.id)}>x</button>*/}
-                                            <IconButton onClick={() => deleteTodolist(td.id)} aria-label="delete"
-                                                        size="small">
-                                                <DeleteIcon fontSize="small"/>
-                                            </IconButton>
-                                        </h3>
+                                        {/*<h3>*/}
+                                        {/*    <EditableSpan title={td.title} editSpan={onChangeTitleTodo}/>*/}
+                                        {/*    <IconButton onClick={() => deleteTodolist(td.id)} aria-label="delete"*/}
+                                        {/*                size="small">*/}
+                                        {/*        <DeleteIcon fontSize="small"/>*/}
+                                        {/*    </IconButton>*/}
+                                        {/*</h3>*/}
 
                                         <Todolist
-                                            // editSpan={editSpan}
+                                            editSpanTodo={editSpanTodo}
+                                            deleteTodolist={deleteTodolist}
                                             // addTask={addTask}
                                             changeIsDone={changeIsDone}
                                             // tasks={tasksForTodolist}
                                             changeFilter={changeFilter}
                                             // removeTask={removeTask}
+                                            title={td.title}
                                             filter={td.filter}
                                             todolistId={td.id}
                                         />
-                                    </div>
                                 </Paper>
                             </Grid>
                         )
