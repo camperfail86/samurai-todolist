@@ -97,29 +97,15 @@ function App() {
                 </Grid>
                 <Grid container spacing={2}>
                     {todolists.map(td => {
-                        // const onChangeTitleTodo = (title: string) => {
-                        //     editSpanTodo(title, td.id)
-                        // }
 
                         return (
                             <Grid item xs={3.1} key={td.id}>
                                 <Paper style={paperStyle}>
-                                        {/*<h3>*/}
-                                        {/*    <EditableSpan title={td.title} editSpan={onChangeTitleTodo}/>*/}
-                                        {/*    <IconButton onClick={() => deleteTodolist(td.id)} aria-label="delete"*/}
-                                        {/*                size="small">*/}
-                                        {/*        <DeleteIcon fontSize="small"/>*/}
-                                        {/*    </IconButton>*/}
-                                        {/*</h3>*/}
-
                                         <Todolist
                                             editSpanTodo={editSpanTodo}
                                             deleteTodolist={deleteTodolist}
-                                            // addTask={addTask}
                                             changeIsDone={changeIsDone}
-                                            // tasks={tasksForTodolist}
                                             changeFilter={changeFilter}
-                                            // removeTask={removeTask}
                                             title={td.title}
                                             filter={td.filter}
                                             todolistId={td.id}

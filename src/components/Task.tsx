@@ -32,8 +32,5 @@ export const Task = memo(({task, changeIsDone, todolistId}: TaskPropsType) => {
             title={task.title}
             editSpan={onChangeTitle}/>
         <ButtonDelete callback={onClickHandler}/>
-        {/*<IconButton onClick={onClickHandler} aria-label="delete" size="small">*/}
-        {/*    <DeleteIcon fontSize="small" />*/}
-        {/*</IconButton>*/}
     </li>
 });

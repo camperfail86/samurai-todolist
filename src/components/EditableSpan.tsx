@@ -1,7 +1,7 @@
 import React, {useState, FocusEvent, ChangeEvent, memo} from "react";
 import TextField from '@mui/material/TextField';
 
-type editableSpanProps = {
+export type editableSpanProps = {
     title: string
     editSpan: (title: string)=>void
 }
@@ -23,7 +23,6 @@ export const  EditableSpan = memo((props: editableSpanProps) => {
 
     return (
         editMode ?
-            // <input value={title} onBlur={editSpanCLick} autoFocus={true}/>
             <TextField
                 onChange={onChangeHandler}
                 value={title}
