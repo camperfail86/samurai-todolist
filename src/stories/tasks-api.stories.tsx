@@ -108,7 +108,7 @@ export const UpdateTask = () => {
     }
 
     const onClickHandler = (todolistId: string, taskId: string) => {
-        tasksAPI.updateTask(todolistId, taskId, title).then((res) => setState(res.data))
+        // tasksAPI.updateTask(todolistId, taskId, title).then((res) => setState(res.data))
     }
 
     return (

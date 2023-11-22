@@ -1,30 +1,21 @@
-import React, {memo, useCallback} from "react";
-import {FilterValuesType, TasksType} from "../App";
+import React, {memo, useCallback, useEffect} from "react";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {FullInput} from "./FullInput";
 import {EditableSpan} from "./EditableSpan";
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import s from './todolist.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../store/store";
-import {addTaskAC, editSpanTaskAC, removeTaskAC} from "../reducers/TaskReducer";
+import {AddTaskTC, fetchTasksThunk, TaskMainType, TaskStatuses} from "../reducers/TaskReducer";
 import {Task} from "./Task";
 import {ButtonFilter} from "./ButtonFilter";
 import {ButtonDelete} from "./ButtonDelete";
-import {todolistID1} from "../reducers/TodolistReducer";
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+import {FilterValuesType, TodolistActionType} from "../reducers/TodolistReducer";
+import {ThunkDispatch} from "redux-thunk";
+import {useAppDispatch} from "../hooks/hooks";
 
 type PropsType = {
     changeFilter: (todolistId: string, value: FilterValuesType) => void
-    changeIsDone: (todolistId: string, id: string) => void
+    changeIsDone: (status: TaskStatuses, todolistId: string, id: string) => void
     filter: FilterValuesType
     todolistId: string
     title: string
@@ -33,14 +24,20 @@ type PropsType = {
 }
 
 const Todolist = memo((props: PropsType) => {
-    const tasks = useSelector<AppStoreType, TasksType>((state) => state.tasks)
-    const dispatch = useDispatch()
+    // const dispatch: ThunkDispatch<AppStoreType, any, TodolistActionType> = useDispatch()
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTasksThunk(props.todolistId))
+    }, [])
+    const tasks = useSelector<AppStoreType, TaskMainType>((state) => state.tasks)
+
     let tasksForTodolist = tasks[props.todolistId];
     if (props.filter === "active") {
-        tasksForTodolist = tasksForTodolist.filter(t => t.isDone === false);
+        tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.New);
     }
     if (props.filter === "completed") {
-        tasksForTodolist = tasksForTodolist.filter(t => t.isDone === true);
+        tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.Completed);
     }
 
     const [listRef] = useAutoAnimate<HTMLUListElement>()
@@ -56,8 +53,13 @@ const Todolist = memo((props: PropsType) => {
     }, [props.todolistId, props.changeFilter])
 
     const addTaskCallback = useCallback((title: string) => {
-        dispatch(addTaskAC(props.todolistId, title))
+        dispatch(AddTaskTC(props.todolistId, title))
     }, [props.todolistId, dispatch])
+
+    const onClickButtonHandler = useCallback(() =>
+            props.deleteTodolist(props.todolistId)
+        ,[props.deleteTodolist, props.todolistId])
+
 
     const onChangeTitleTodo = useCallback((title: string) => {
         props.editSpanTodo(title, props.todolistId)
@@ -71,9 +73,7 @@ const Todolist = memo((props: PropsType) => {
         <div>
             <h3>
                 <EditableSpan title={props.title} editSpan={onChangeTitleTodo}/>
-                <ButtonDelete callback={useCallback(() =>
-                    props.deleteTodolist(props.todolistId),[props.deleteTodolist, props.todolistId])
-                }/>
+                <ButtonDelete callback={onClickButtonHandler}/>
             </h3>
             <FullInput callback={addTaskCallback}/>
             <ul className={s.list} ref={listRef}>
