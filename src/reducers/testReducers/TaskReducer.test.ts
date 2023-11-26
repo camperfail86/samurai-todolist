@@ -3,7 +3,7 @@ import {
     // addTasksArrayNullAC,
     changeIsDoneAC, editSpanTaskAC, removeTaskAC, TaskMainType, TaskReducer, TaskStatuses
 }
-    from './TaskReducer'
+    from '../TaskReducer'
 import {
     addTodolistAC, changeFilterAC,
     deleteTodolistAC,
@@ -11,7 +11,7 @@ import {
     todolistID1,
     TodolistReducer,
     TodolistsMainType
-} from "./TodolistReducer";
+} from "../TodolistReducer";
 import {v1} from "uuid";
 
 test('correct task should be deleted from correct array', () => {

@@ -1,11 +1,8 @@
-import React, {useCallback, useEffect, useReducer} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import Todolist from "./components/Todolist";
-import {v1} from "uuid";
 import {FullInput} from "./components/FullInput";
-import {EditableSpan} from "./components/EditableSpan";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import AppBar from '@mui/material/AppBar';
@@ -15,42 +12,35 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import Grid from "@mui/material/Grid";
-import {
-    addTodolistAC, AddTodolistType,
-    changeFilterAC, changeFilterTC, createTodolistTC,
-    deleteTodolistAC, deleteTodolistTC,
-    editSpanTodoAC, editSpanTodoTC, fetchTodolistThunk, FilterValuesType, setTodolistAC, TodolistActionType,
-    TodolistReducer, TodolistsMainType
+import {changeFilterTC, createTodolistTC, deleteTodolistTC, editSpanTodoTC, fetchTodolistThunk, FilterValuesType,
+    TodolistsMainType
 } from "./reducers/TodolistReducer";
 import {
-    changeIsDoneAC, changeIsDoneTC, TaskStatuses,
+     changeIsDoneTC, TaskStatuses,
 } from "./reducers/TaskReducer";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {AppStoreType} from "./store/store";
-import {todolistAPI} from "./api/todolist-api";
-import {ThunkDispatch} from "redux-thunk";
 import {useAppDispatch} from "./hooks/hooks";
+import {ErrorSnackBar} from "./components/common/ErrorSnackBar";
+import {LinearProgress} from "@mui/material";
+import {StatusType} from "./reducers/AppReducer";
 
 const paperStyle = {
     padding: '10px 15px'
 }
 
-// export type FilterValuesType = 'all' | 'completed' | 'active'
-// export type TodolistsType = {
-//     id: string
-//     title: string
-//     filter: FilterValuesType
-// }
-// export type TaskType = {
-//     id: string
-//     title: string
-//     isDone: boolean
-// }
-// export type TasksType = Record<string, TaskType[]>
+const loaderStyle={
+    position: 'absolute'
+}
+
+const boxStyle = {
+    position: 'relative'
+}
 
 function App() {
     const todolists = useSelector<AppStoreType, Array<TodolistsMainType>>((state) => state.todolists)
     const dispatch = useAppDispatch()
+    const status = useSelector<AppStoreType, StatusType>((state) => state.app.status)
 
     useEffect(() => {
         dispatch(fetchTodolistThunk)
@@ -96,6 +86,7 @@ function App() {
                         <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
+                {status === 'loading' ? <LinearProgress color="secondary" /> : ''}
             </Box>
             <Container>
                 <Grid container style={ {padding: '20px 0'} }>
@@ -122,6 +113,7 @@ function App() {
                     })}
                 </Grid>
             </Container>
+            <ErrorSnackBar/>
         </div>
     );
 }

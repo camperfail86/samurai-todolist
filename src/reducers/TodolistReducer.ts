@@ -1,14 +1,13 @@
 import {v1} from "uuid";
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
-import todolist from "../components/Todolist";
+import {setErrorAC, setStatusAC} from "./AppReducer";
 
 export type TodolistActionType = AddTodolistType
     | ChangeFilterType
     | EditSpanTodoType
     | DeleteTodolistType
     | SetTodolistsType
-type TodolistStateType = TodolistsMainType[]
 
 export type FilterValuesType = 'all' | 'completed' | 'active'
 export type TodolistsMainType = TodolistType & {
@@ -17,23 +16,13 @@ export type TodolistsMainType = TodolistType & {
 
 export const todolistID1 = v1()
 export const todolistID2 = v1()
-let initialState: TodolistsMainType[] = [
-    // {id: todolistID1, title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
-]
+let initialState: TodolistsMainType[] = []
 
 export const TodolistReducer = (state = initialState, action: TodolistActionType): TodolistsMainType[] => {
     switch (action.type) {
         case 'ADD-TODOLIST': {
             if (action.payload.todolist.title.trim() !== '') {
-                // let newTodolist: TodolistsMainType = {
-                //     id: action.payload.todolist.id,
-                //     title: action.payload.todolist.title,
-                //     filter: 'all',
-                //     order: 0,
-                //     addedDate: ''
-                // };
                 return [...state, {...action.payload.todolist, filter: 'all'}]
-                // return copyState
             } else return state
         }
         case "SET-TODOLISTS": {
@@ -96,26 +85,39 @@ export const setTodolistAC = (todolists: TodolistType[]) => {
 }
 
 export const fetchTodolistThunk = (dispatch: Dispatch) => {
+    dispatch(setStatusAC('loading'))
     todolistAPI.getTodo()
         .then(res => {
-        dispatch(setTodolistAC(res.data))
-    })
+            dispatch(setTodolistAC(res.data))
+            dispatch(setStatusAC('succeeded'))
+        })
 }
 
 export const deleteTodolistTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.deleteTodo(todolistId)
             .then(res => {
                 dispatch(deleteTodolistAC(todolistId))
+                dispatch(setStatusAC('succeeded'))
             })
     }
 }
 
 export const createTodolistTC = (title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.createTodo(title)
             .then(res => {
-                dispatch(addTodolistAC(res.data.data.item))
+                if (res.data.resultCode === 0) {
+                    dispatch(setStatusAC('succeeded'))
+                    dispatch(addTodolistAC(res.data.data.item))
+                } else {
+                    if (res.data.messages.length) {
+                        dispatch(setErrorAC(res.data.messages[0]))
+                    }
+                    dispatch(setStatusAC('failed'))
+                }
             })
     }
 }
@@ -131,9 +133,6 @@ export const editSpanTodoTC = (todolistId: string, title: string) => {
 
 export const changeFilterTC = (todolistId: string, value: FilterValuesType) => {
     return (dispatch: Dispatch) => {
-        // todolistAPI.updateTodo(todolistId, title)
-            // .then(res => {
-                dispatch(changeFilterAC(todolistId, value))
-            // })
+        dispatch(changeFilterAC(todolistId, value))
     }
 }

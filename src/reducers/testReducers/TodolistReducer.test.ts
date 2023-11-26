@@ -5,7 +5,7 @@ import {
     editSpanTodoAC, FilterValuesType,
     TodolistReducer,
     TodolistsMainType
-} from "./TodolistReducer";
+} from "../TodolistReducer";
 import {v1} from "uuid";
 
 test('correct todolist should be added', () => {
