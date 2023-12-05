@@ -1,5 +1,4 @@
 import {
-    addTodolistAC,
     changeFilterAC,
     deleteTodolistAC,
     editSpanTodoAC, FilterValuesType,
@@ -15,8 +14,8 @@ test('correct todolist should be added', () => {
     let newTodolistTitle = 'New Todolist'
 
     const startState: Array<TodolistsMainType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: ''},
-        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: ''},
+        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: '', entityStatus: 'idle'},
+        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: '', entityStatus: 'idle'},
     ]
 
     // const endState = TodolistReducer(startState, addTodolistAC(v1(), newTodolistTitle))
@@ -30,8 +29,8 @@ test('correct todolist should be removed', () => {
     let todolistId2 = v1()
 
     const startState: Array<TodolistsMainType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: ''},
-        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: ''},
+        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: '', entityStatus: 'idle'},
+        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: '', entityStatus: 'idle'},
     ]
 
     const endState = TodolistReducer(startState, deleteTodolistAC(todolistId1))
@@ -45,8 +44,8 @@ test("correct todolist should change its name", () => {
     let todolistId2 = v1()
     let newTitle = 'Hello'
     const startState: Array<TodolistsMainType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: ''},
-        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: ''},
+        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: '', entityStatus: 'idle'},
+        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: '', entityStatus: 'idle'},
     ]
     const endState = TodolistReducer(startState, editSpanTodoAC(newTitle, todolistId2))
 
@@ -61,8 +60,8 @@ test('correct filter of todolist should be changed', () => {
     let newFilter: FilterValuesType = 'completed'
 
     const startState: Array<TodolistsMainType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: ''},
-        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: ''},
+        {id: todolistId1, title: 'What to learn', filter: 'all', order: 1, addedDate: '', entityStatus: 'idle'},
+        {id: todolistId2, title: 'What to buy', filter: 'all', order: 2, addedDate: '', entityStatus: 'idle'},
     ]
 
     const endState = TodolistReducer(startState, changeFilterAC(todolistId2, newFilter))

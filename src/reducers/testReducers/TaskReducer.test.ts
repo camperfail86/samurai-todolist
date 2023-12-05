@@ -21,13 +21,13 @@ test('correct task should be deleted from correct array', () => {
                 id: '1', title: "HTML&CSS", todoListId: 'todolistID1',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "JS", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -35,13 +35,13 @@ test('correct task should be deleted from correct array', () => {
                 id: '1', title: "MILK", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "COFFEE", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 2, addedDate: '', deadline: '', order: 2,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ]
     }
@@ -120,13 +120,13 @@ test('status of specified task should be changed', () => {
                 id: '1', title: "HTML&CSS", todoListId: 'todolistID1',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "JS", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -134,13 +134,13 @@ test('status of specified task should be changed', () => {
                 id: '1', title: "MILK", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "COFFEE", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 2, addedDate: '', deadline: '', order: 2,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ]
     }
@@ -160,13 +160,13 @@ test('status', () => {
                 id: '1', title: "HTML&CSS", todoListId: 'todolistID1',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "JS", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -174,13 +174,13 @@ test('status', () => {
                 id: '1', title: "MILK", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "COFFEE", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 2, addedDate: '', deadline: '', order: 2,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ]
     }
@@ -200,13 +200,13 @@ test('new array should be added when new todolist is added', () => {
                 id: '1', title: "HTML&CSS", todoListId: 'todolistID1',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "JS", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -214,13 +214,13 @@ test('new array should be added when new todolist is added', () => {
                 id: '1', title: "MILK", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "COFFEE", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 2, addedDate: '', deadline: '', order: 2,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ]
     }
@@ -266,13 +266,13 @@ test('property with todolistId should be deleted', () => {
                 id: '1', title: "HTML&CSS", todoListId: 'todolistID1',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "JS", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -280,13 +280,13 @@ test('property with todolistId should be deleted', () => {
                 id: '1', title: "MILK", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 1, addedDate: '', deadline: '', order: 1,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
             {
                 id: '2', title: "COFFEE", todoListId: 'todolistID2',
                 status: TaskStatuses.Completed, startDate: '',
                 priority: 2, addedDate: '', deadline: '', order: 2,
-                description: ''
+                description: '', entityStatus: 'idle'
             },
         ]
     }

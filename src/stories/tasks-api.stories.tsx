@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
 import {tasksAPI} from "../api/task-api";
+import {TaskStatuses} from "../reducers/TaskReducer";
 
 export default {
     title: 'API-tasks'
@@ -93,10 +94,13 @@ export const UpdateTask = () => {
     const [taskId, setTaskId] = useState('')
     const title = 'ANATOLIk'
     // useEffect(() => {
-        // const taskId = 'dea3077d-48eb-4cee-af09-b743d9294a23'
-        // const title = 'VALORANTIK'
-        // tasksAPI.updateTask(taskId, title)
-        //     .then((res) => setState(res.data))
+    //     const taskId = '2a538ac3-cc36-4ba3-a2ad-62d98e2e17d6'
+    //     const todolistId = 'bd37c8e6-bdf6-433a-b737-9c58c8fb6653'
+    //     const model = {title: 'sad', status: TaskStatuses.Completed, startDate: '',
+    //                 priority: 1, addedDate: '', deadline: '', order: 1,
+    //                 description: ''}
+    //     tasksAPI.updateTask(taskId, todolistId, model)
+    //         .then((res) => setState(res.data))
     // }, [])
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +112,11 @@ export const UpdateTask = () => {
     }
 
     const onClickHandler = (todolistId: string, taskId: string) => {
-        // tasksAPI.updateTask(todolistId, taskId, title).then((res) => setState(res.data))
+        const model = {title: 'sad', status: TaskStatuses.Completed, startDate: '',
+                            priority: 1, addedDate: '', deadline: '', order: 1,
+                            description: ''}
+        tasksAPI.updateTask(todolistId, taskId, model)
+            .then((res) => setState(res.data))
     }
 
     return (

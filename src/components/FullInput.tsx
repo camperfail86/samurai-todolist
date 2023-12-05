@@ -19,6 +19,7 @@ const btnStyle = {
 
 export type FullInputType = {
     callback: (title: string) => void
+    disabled?: boolean
 }
 export const FullInput = memo((props: FullInputType) => {
     const [error, setError] = useState(false)
@@ -56,8 +57,9 @@ export const FullInput = memo((props: FullInputType) => {
                        error={error}
                        helperText={error ? "Title is required" : ""}
                        size="small"
+                       disabled={props.disabled}
             />
-            <Button style={btnStyle} onClick={onClickHandler} variant="contained">+</Button>
+            <Button style={btnStyle} onClick={onClickHandler} variant="contained" disabled={props.disabled}>+</Button>
         </div>
     )
 })

@@ -19,7 +19,7 @@ const meta: Meta<typeof Task> = {
         task: {id: '12wsdewfijdei', title: 'JS', todoListId: todolistID1,
             status: TaskStatuses.New, startDate: '',
             priority: 1, addedDate: '', deadline: '', order: 1,
-            description: ''},
+            description: '', entityStatus: 'idle'},
         todolistId: 'fgdosrg8rgjuh'
     }
 };
@@ -30,7 +30,7 @@ type Story = StoryObj<typeof Task>;
 export const TaskIsDoneStory: Story = {
     args: {
         task: {id: '12wsdewfijdei', title: 'JS', status: TaskStatuses.Completed, todoListId: todolistID1,
-            startDate: '', priority: 1, addedDate: '', deadline: '', order: 1, description: ''},
+            startDate: '', priority: 1, addedDate: '', deadline: '', order: 1, description: '', entityStatus: 'idle'},
     }
 };
 

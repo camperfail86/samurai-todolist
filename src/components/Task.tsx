@@ -5,14 +5,16 @@ import {EditableSpan} from "./EditableSpan";
 import {ButtonDelete} from "./ButtonDelete";
 import {TaskType} from "../api/task-api";
 import {useAppDispatch} from "../hooks/hooks";
+import {StatusType} from "../reducers/AppReducer";
 
 export type TaskPropsType = {
     task: TaskType
     changeIsDone: (status: TaskStatuses, todolistId: string, id: string) => void
     todolistId: string
+    entityStatus: StatusType
 }
 
-export const Task = memo(({task, changeIsDone, todolistId}: TaskPropsType) => {
+export const Task = memo(({entityStatus, task, changeIsDone, todolistId}: TaskPropsType) => {
     // const dispatch: ThunkDispatch<AppStoreType, any, TaskActionType> = useDispatch()
     const dispatch = useAppDispatch()
     const onClickHandler = useCallback(() => {
@@ -30,10 +32,13 @@ export const Task = memo(({task, changeIsDone, todolistId}: TaskPropsType) => {
         <Checkbox size={"small"}
                   onChange={onChangeHandler}
                   checked={!!task.status}
+                  disabled={entityStatus === 'loading'}
                   color="secondary"/>
         <EditableSpan
             title={task.title}
             editSpan={onChangeTitle}/>
-        <ButtonDelete callback={onClickHandler}/>
+        <ButtonDelete callback={onClickHandler}
+                      disabled={entityStatus === 'loading'}
+        />
     </li>
 });

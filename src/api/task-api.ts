@@ -1,5 +1,6 @@
 import {instance, ResponseType, TodolistType} from "./todolist-api";
 import {TaskStatuses} from "../reducers/TaskReducer";
+import {StatusType} from "../reducers/AppReducer";
 
 export const tasksAPI = {
     getTasks(todolistId: string) {
@@ -27,6 +28,7 @@ export type TaskType = {
     status: TaskStatuses
     title: string
     todoListId: string
+    entityStatus: StatusType
 }
 
 export type UpdateTaskModelType = {

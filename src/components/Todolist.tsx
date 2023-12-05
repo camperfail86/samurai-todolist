@@ -9,9 +9,10 @@ import {AddTaskTC, fetchTasksThunk, TaskMainType, TaskStatuses} from "../reducer
 import {Task} from "./Task";
 import {ButtonFilter} from "./ButtonFilter";
 import {ButtonDelete} from "./ButtonDelete";
-import {FilterValuesType, TodolistActionType} from "../reducers/TodolistReducer";
+import {changeTodolistEntityStatus, FilterValuesType, TodolistActionType} from "../reducers/TodolistReducer";
 import {ThunkDispatch} from "redux-thunk";
 import {useAppDispatch} from "../hooks/hooks";
+import {StatusType} from "../reducers/AppReducer";
 
 type PropsType = {
     changeFilter: (todolistId: string, value: FilterValuesType) => void
@@ -21,6 +22,7 @@ type PropsType = {
     title: string
     editSpanTodo: (title: string, todolistId: string) => void
     deleteTodolist: (todolistId: string) => void
+    entityStatus: StatusType
 }
 
 const Todolist = memo((props: PropsType) => {
@@ -56,9 +58,9 @@ const Todolist = memo((props: PropsType) => {
         dispatch(AddTaskTC(props.todolistId, title))
     }, [props.todolistId, dispatch])
 
-    const onClickButtonHandler = useCallback(() =>
+    const onClickButtonHandler = useCallback(() => {
             props.deleteTodolist(props.todolistId)
-        ,[props.deleteTodolist, props.todolistId])
+        },[props.deleteTodolist, props.todolistId])
 
 
     const onChangeTitleTodo = useCallback((title: string) => {
@@ -73,9 +75,9 @@ const Todolist = memo((props: PropsType) => {
         <div>
             <h3>
                 <EditableSpan title={props.title} editSpan={onChangeTitleTodo}/>
-                <ButtonDelete callback={onClickButtonHandler}/>
+                <ButtonDelete callback={onClickButtonHandler} disabled={props.entityStatus === 'loading'}/>
             </h3>
-            <FullInput callback={addTaskCallback}/>
+            <FullInput callback={addTaskCallback} disabled={props.entityStatus === 'loading'}/>
             <ul className={s.list} ref={listRef}>
                 {
                     tasksForTodolist.map(t => {
@@ -83,6 +85,7 @@ const Todolist = memo((props: PropsType) => {
                             key={t.id}
                             task={t}
                             changeIsDone={props.changeIsDone}
+                            entityStatus={t.entityStatus}
                             todolistId={props.todolistId}/>
                     })
                 }
