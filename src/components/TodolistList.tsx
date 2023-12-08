@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import {FullInput} from "./FullInput";
-import {FilterValuesType, TodolistsMainType} from "../reducers/TodolistReducer";
+import {
+    changeFilterTC,
+    createTodolistTC,
+    deleteTodolistTC, editSpanTodoTC, fetchTodolistThunk,
+    FilterValuesType,
+    TodolistsMainType
+} from "../reducers/TodolistReducer";
 import Paper from "@mui/material/Paper";
 import Todolist from "./Todolist";
 import {useSelector} from "react-redux";
 import {AppStoreType} from "../store/store";
-import {TaskStatuses} from "../reducers/TaskReducer";
+import {changeIsDoneTC, TaskStatuses} from "../reducers/TaskReducer";
+import {useAppDispatch} from "../hooks/hooks";
+import {Navigate} from "react-router-dom";
 
 const paperStyle = {
     padding: '10px 15px'
@@ -21,15 +29,40 @@ type TodolistListType = {
     deleteTodolist: (todolistId: string) => void
 }
 
-export const TodolistList = (
-    {
-        addTodolist,
-        editSpanTodo,
-        deleteTodolist,
-        changeIsDone,
-        changeFilter
-    }: TodolistListType) => {
+export const TodolistList = () => {
     const todolists = useSelector<AppStoreType, Array<TodolistsMainType>>((state) => state.todolists)
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useSelector<AppStoreType>((state)=> state.login.isLoggedIn)
+    const changeIsDone = useCallback((status: TaskStatuses, todolistId: string, id: string) => {
+        dispatch(changeIsDoneTC(status, todolistId, id))
+    }, [dispatch])
+
+    const addTodolist = useCallback((title: string) => {
+        dispatch(createTodolistTC(title))
+    }, [dispatch])
+
+    const changeFilter = useCallback((todolistId: string, value: FilterValuesType) => {
+        dispatch(changeFilterTC(todolistId, value))
+    }, [dispatch])
+
+    const deleteTodolist = useCallback((todolistId: string) => {
+        dispatch(deleteTodolistTC(todolistId))
+    }, [dispatch])
+
+    const editSpanTodo = useCallback((title: string, todolistId: string) => {
+        dispatch(editSpanTodoTC(todolistId, title))
+    }, [dispatch])
+
+    useEffect(() => {
+        dispatch(fetchTodolistThunk())
+    }, []);
+
+    if (!isLoggedIn) {
+        return <Navigate to='/login'/>
+    }
+
+
+
     return (
         <Container>
             <Grid container style={{padding: '20px 0'}}>

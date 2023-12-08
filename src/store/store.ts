@@ -3,12 +3,14 @@ import {TodolistActionType, TodolistReducer} from "../reducers/TodolistReducer";
 import {TaskActionType, TaskReducer} from "../reducers/TaskReducer";
 import thunk, {ThunkDispatch} from "redux-thunk";
 import {AppReducer} from "../reducers/AppReducer";
+import {LoginReducer} from "../reducers/LoginReducer";
 
 export const rootReducer = combineReducers(
     {
         todolists: TodolistReducer,
         tasks: TaskReducer,
-        app: AppReducer
+        app: AppReducer,
+        login: LoginReducer
     }
 )
 export type AppActionType = TodolistActionType | TaskActionType

@@ -2,7 +2,7 @@ import {v1} from "uuid";
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {setErrorAC, setStatusAC, StatusType} from "./AppReducer";
-import {handleServerNetworkError} from "../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 export type TodolistActionType = AddTodolistType
     | ChangeFilterType
@@ -100,13 +100,15 @@ export const changeTodolistEntityStatus = (id: string, entityStatus: StatusType)
     } as const
 }
 
-export const fetchTodolistThunk = (dispatch: Dispatch) => {
+export const fetchTodolistThunk = () => (dispatch: Dispatch) => {
     dispatch(setStatusAC('loading'))
     todolistAPI.getTodo()
         .then(res => {
             dispatch(setTodolistAC(res.data))
             dispatch(setStatusAC('succeeded'))
-        })
+        }).catch((error) => {
+        handleServerAppError(error, dispatch)
+    })
 }
 
 export const deleteTodolistTC = (todolistId: string) => {
@@ -136,7 +138,7 @@ export const createTodolistTC = (title: string) => {
                     }
                     dispatch(setStatusAC('failed'))
                 }
-            }).catch((e)=> {
+            }).catch((e) => {
             handleServerNetworkError(e, dispatch)
         })
     }

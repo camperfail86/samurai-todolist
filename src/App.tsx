@@ -24,14 +24,12 @@ import {AppStoreType} from "./store/store";
 import {useAppDispatch} from "./hooks/hooks";
 import {ErrorSnackBar} from "./components/common/ErrorSnackBar";
 import LinearProgress from "@mui/material/LinearProgress";
-import {StatusType} from "./reducers/AppReducer";
+import {initializeAppTC, StatusType} from "./reducers/AppReducer";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {TodolistList} from "./components/TodolistList";
 import {Login} from "./features/login/Login";
-
-const paperStyle = {
-    padding: '10px 15px'
-}
+import CircularProgress from '@mui/material/CircularProgress';
+import {logoutTC} from "./reducers/LoginReducer";
 
 const loaderStyle = {
     position: 'absolute'
@@ -42,33 +40,41 @@ const boxStyle = {
 }
 
 function App() {
-    // const todolists = useSelector<AppStoreType, Array<TodolistsMainType>>((state) => state.todolists)
     const dispatch = useAppDispatch()
     const status = useSelector<AppStoreType, StatusType>((state) => state.app.status)
-
+    const initialized = useSelector<AppStoreType>((state) => state.app.initialized)
+    const isLoggedIn = useSelector<AppStoreType>(state => state.login.isLoggedIn)
     useEffect(() => {
-        dispatch(fetchTodolistThunk)
+        dispatch(initializeAppTC())
     }, [])
 
-    const changeIsDone = useCallback((status: TaskStatuses, todolistId: string, id: string) => {
-        dispatch(changeIsDoneTC(status, todolistId, id))
+    const logoutHandler = useCallback(() => {
+        dispatch(logoutTC())
     }, [dispatch])
 
-    const addTodolist = useCallback((title: string) => {
-        dispatch(createTodolistTC(title))
-    }, [dispatch])
+    if (!initialized) {
+        return <CircularProgress color="secondary" />
+    }
 
-    const changeFilter = useCallback((todolistId: string, value: FilterValuesType) => {
-        dispatch(changeFilterTC(todolistId, value))
-    }, [dispatch])
-
-    const deleteTodolist = useCallback((todolistId: string) => {
-        dispatch(deleteTodolistTC(todolistId))
-    }, [dispatch])
-
-    const editSpanTodo = useCallback((title: string, todolistId: string) => {
-        dispatch(editSpanTodoTC(todolistId, title))
-    }, [dispatch])
+    // const changeIsDone = useCallback((status: TaskStatuses, todolistId: string, id: string) => {
+    //     dispatch(changeIsDoneTC(status, todolistId, id))
+    // }, [dispatch])
+    //
+    // const addTodolist = useCallback((title: string) => {
+    //     dispatch(createTodolistTC(title))
+    // }, [dispatch])
+    //
+    // const changeFilter = useCallback((todolistId: string, value: FilterValuesType) => {
+    //     dispatch(changeFilterTC(todolistId, value))
+    // }, [dispatch])
+    //
+    // const deleteTodolist = useCallback((todolistId: string) => {
+    //     dispatch(deleteTodolistTC(todolistId))
+    // }, [dispatch])
+    //
+    // const editSpanTodo = useCallback((title: string, todolistId: string) => {
+    //     dispatch(editSpanTodoTC(todolistId, title))
+    // }, [dispatch])
 
     return (
         <BrowserRouter>
@@ -88,45 +94,17 @@ function App() {
                             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                                 News
                             </Typography>
-                            <Button color="inherit">Login</Button>
+                            {isLoggedIn ? <Button color="inherit" onClick={logoutHandler}>Log Out</Button> : null}
                         </Toolbar>
                     </AppBar>
                     {status === 'loading' ? <LinearProgress color="secondary"/> : ''}
                 </Box>
                 <Routes>
                     <Route path='/'
-                           element={<TodolistList addTodolist={addTodolist} deleteTodolist={deleteTodolist}
-                                                  editSpanTodo={editSpanTodo}
-                                                  changeFilter={changeFilter} changeIsDone={changeIsDone}/>}/>
+                           element={<TodolistList />}/>
                     <Route path='/login' element={<Login/>}/>
+                    <Route path='*' element={<h1>404: PAGE NOT FOUND</h1>} />
                 </Routes>
-
-                {/*<Container>*/}
-                {/*    <Grid container style={{padding: '20px 0'}}>*/}
-                {/*        <FullInput callback={addTodolist}/>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid container spacing={2}>*/}
-                {/*        {todolists.map((td: TodolistsMainType) => {*/}
-
-                {/*            return (*/}
-                {/*                <Grid item xs={3.1} key={td.id}>*/}
-                {/*                    <Paper style={paperStyle}>*/}
-                {/*                        <Todolist*/}
-                {/*                            entityStatus={td.entityStatus}*/}
-                {/*                            editSpanTodo={editSpanTodo}*/}
-                {/*                            deleteTodolist={deleteTodolist}*/}
-                {/*                            changeIsDone={changeIsDone}*/}
-                {/*                            changeFilter={changeFilter}*/}
-                {/*                            title={td.title}*/}
-                {/*                            filter={td.filter}*/}
-                {/*                            todolistId={td.id}*/}
-                {/*                        />*/}
-                {/*                    </Paper>*/}
-                {/*                </Grid>*/}
-                {/*            )*/}
-                {/*        })}*/}
-                {/*    </Grid>*/}
-                {/*</Container>*/}
                 <ErrorSnackBar/>
             </div>
         </BrowserRouter>
