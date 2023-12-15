@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from "react";
-import { editSpanTaskAC, editSpanTaskTC, fetchDeleteTaskTC, TaskStatuses } from "../reducers/TaskReducer";
+import { editSpanTaskTC, fetchDeleteTaskTC, TaskStatuses } from "../reducers/TaskReducer";
 import Checkbox from "@mui/material/Checkbox";
 import { EditableSpan } from "./EditableSpan";
 import { ButtonDelete } from "./ButtonDelete";

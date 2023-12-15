@@ -9,7 +9,7 @@ import { AddTaskTC, fetchTasksThunk, TaskMainType, TaskStatuses } from "../reduc
 import { Task } from "./Task";
 import { ButtonFilter } from "./ButtonFilter";
 import { ButtonDelete } from "./ButtonDelete";
-import { changeTodolistEntityStatus, FilterValuesType, TodolistActionType } from "../reducers/TodolistReducer";
+import { FilterValuesType, TodolistActionType } from "../reducers/TodolistReducer";
 import { ThunkDispatch } from "redux-thunk";
 import { useAppDispatch } from "../hooks/hooks";
 import { StatusType } from "../reducers/AppReducer";
@@ -28,11 +28,11 @@ type PropsType = {
 const Todolist = memo((props: PropsType) => {
     // const dispatch: ThunkDispatch<AppStoreType, any, TodolistActionType> = useDispatch()
     const dispatch = useAppDispatch();
+    const tasks = useSelector<AppStoreType, TaskMainType>((state) => state.tasks);
 
     useEffect(() => {
         dispatch(fetchTasksThunk(props.todolistId));
     }, []);
-    const tasks = useSelector<AppStoreType, TaskMainType>((state) => state.tasks);
 
     let tasksForTodolist = tasks[props.todolistId];
     if (props.filter === "active") {
@@ -84,7 +84,7 @@ const Todolist = memo((props: PropsType) => {
             </h3>
             <FullInput callback={addTaskCallback} disabled={props.entityStatus === "loading"} />
             <ul className={s.list} ref={listRef}>
-                {tasksForTodolist.map((t) => {
+                {tasksForTodolist?.map((t) => {
                     return (
                         <Task
                             key={t.id}

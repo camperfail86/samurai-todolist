@@ -35,6 +35,7 @@ export const TodolistList = () => {
     const todolists = useSelector<AppStoreType, Array<TodolistsMainType>>((state) => state.todolists);
     const dispatch = useAppDispatch();
     const isLoggedIn = useSelector<AppStoreType>((state) => state.login.isLoggedIn);
+
     const changeIsDone = useCallback(
         (status: TaskStatuses, todolistId: string, id: string) => {
             dispatch(changeIsDoneTC(status, todolistId, id));

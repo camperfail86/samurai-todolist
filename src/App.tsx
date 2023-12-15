@@ -59,26 +59,6 @@ function App() {
         return <CircularProgress color="secondary" />;
     }
 
-    // const changeIsDone = useCallback((status: TaskStatuses, todolistId: string, id: string) => {
-    //     dispatch(changeIsDoneTC(status, todolistId, id))
-    // }, [dispatch])
-    //
-    // const addTodolist = useCallback((title: string) => {
-    //     dispatch(createTodolistTC(title))
-    // }, [dispatch])
-    //
-    // const changeFilter = useCallback((todolistId: string, value: FilterValuesType) => {
-    //     dispatch(changeFilterTC(todolistId, value))
-    // }, [dispatch])
-    //
-    // const deleteTodolist = useCallback((todolistId: string) => {
-    //     dispatch(deleteTodolistTC(todolistId))
-    // }, [dispatch])
-    //
-    // const editSpanTodo = useCallback((title: string, todolistId: string) => {
-    //     dispatch(editSpanTodoTC(todolistId, title))
-    // }, [dispatch])
-
     return (
         <BrowserRouter>
             <div className="App">

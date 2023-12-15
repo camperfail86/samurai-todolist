@@ -1,67 +1,39 @@
 import { Dispatch } from "redux";
 import { authAPI } from "../api/auth-api";
-import { setLoggedIn } from "./LoginReducer";
+import { loginActions } from "./LoginReducer";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk } from "../store/store";
 
-export type InitStateType = {
-    error: string | null;
-    status: StatusType;
-    initialized: boolean;
-};
 export type StatusType = "idle" | "loading" | "succeeded" | "failed";
 
-export type AppActionType = SetStatusType | SetErrorType | SetInitializedType;
-
-export const initState: InitStateType = {
-    error: null,
-    status: "idle",
-    initialized: false,
-};
-
-export const AppReducer = (state = initState, action: AppActionType) => {
-    switch (action.type) {
-        case "APP/SET-ERROR": {
-            return { ...state, error: action.payload.error };
+export const slice = createSlice({
+    name: 'app-slice',
+    initialState: {
+        error: null as null | string,
+        status: "idle" as StatusType,
+        initialized: false,
+    },
+    reducers: {
+        setError(state, action: PayloadAction<{error: string | null}>) {
+            state.error = action.payload.error
+        },
+        setStatus(state, action: PayloadAction<{status: StatusType}>) {
+            state.status = action.payload.status
+        },
+        setInitialized(state, action: PayloadAction<{value: boolean}>) {
+            state.initialized = action.payload.value
         }
-        case "APP/SET-STATUS": {
-            return { ...state, status: action.payload.status };
-        }
-        case "APP/SET-INITIALIZED": {
-            return { ...state, initialized: action.payload.value };
-        }
-        default:
-            return state;
-    }
-};
+    },
+})
 
-export type SetErrorType = ReturnType<typeof setErrorAC>;
-export const setErrorAC = (error: string | null) => {
-    return {
-        type: "APP/SET-ERROR",
-        payload: { error },
-    } as const;
-};
+export const appReducer = slice.reducer
+export const appActions = slice.actions
 
-export type SetInitializedType = ReturnType<typeof setInitializedAC>;
-export const setInitializedAC = (value: boolean) => {
-    return {
-        type: "APP/SET-INITIALIZED",
-        payload: { value },
-    } as const;
-};
-
-export type SetStatusType = ReturnType<typeof setStatusAC>;
-export const setStatusAC = (status: StatusType) => {
-    return {
-        type: "APP/SET-STATUS",
-        payload: { status },
-    } as const;
-};
-
-export const initializeAppTC = () => (dispatch: Dispatch) => {
+export const initializeAppTC = (): AppThunk => (dispatch: Dispatch) => {
     authAPI.me().then((res) => {
         if (res.data.resultCode === 0) {
-            dispatch(setLoggedIn(true));
+            dispatch(loginActions.setLoggedIn({value: true}));
         }
-        dispatch(setInitializedAC(true));
+        dispatch(appActions.setInitialized({value: true}));
     });
 };

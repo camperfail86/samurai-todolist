@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { Task } from "../components/Task";
 import { ReduxStoreProviderDecorator } from "./decorators/ReduxStoreProviderDecorator";
-import { todolistID1 } from "../reducers/TodolistReducer";
+// import { todolistID1 } from "../reducers/TodolistReducer";
 import { TaskStatuses } from "../reducers/TaskReducer";
 
 // More on how to set up stories at:
@@ -19,7 +19,7 @@ const meta: Meta<typeof Task> = {
         task: {
             id: "12wsdewfijdei",
             title: "JS",
-            todoListId: todolistID1,
+            todoListId: 'todolistID1',
             status: TaskStatuses.New,
             startDate: "",
             priority: 1,
@@ -42,7 +42,7 @@ export const TaskIsDoneStory: Story = {
             id: "12wsdewfijdei",
             title: "JS",
             status: TaskStatuses.Completed,
-            todoListId: todolistID1,
+            todoListId: 'todolistID1',
             startDate: "",
             priority: 1,
             addedDate: "",

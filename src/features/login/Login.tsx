@@ -24,18 +24,14 @@ export type LoginType = {
 const validate = (values: LoginType) => {
     const errors: LoginType = {};
     if (!values.email) {
-        // return {email: 'Required'}
         errors.email = "Required";
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        // return {email: 'Invalid email address'}
         errors.email = "Invalid email address";
     }
 
     if (!values.password) {
-        // return {password: 'Required'}
         errors.password = "Required";
     } else if (values.password.length <= 3) {
-        // return {password: 'Must be 3 characters or less'}
         errors.password = "Must be 3 characters or less";
     }
     return errors;
@@ -52,7 +48,6 @@ export const Login = () => {
             rememberMe: false,
         },
         onSubmit: (values) => {
-            // alert(JSON.stringify(values, null, 2));
             dispatch(loginTC(values));
         },
     });
