@@ -72,6 +72,9 @@ const slice = createSlice({
             .addCase(todolistActions.deleteTodolist, (state, action) => {
                 delete state[action.payload.todolistId];
             })
+            .addCase(todolistActions.deleteStateTodo, (state, action) => {
+                Object.keys(state).forEach(key => delete state[key]);
+            })
             .addCase(todolistActions.setTodolist, (state, action) => {
                 action.payload.todolists.forEach((tl) => {
                     state[tl.id] = [];
@@ -83,135 +86,6 @@ const slice = createSlice({
 export const taskReducer = slice.reducer;
 export const taskActions = slice.actions;
 
-// let initialState: TaskMainType = {};
-
-// export const TaskReducer = (state = initialState, action: TaskActionType): TaskStateType => {
-//     switch (action.type) {
-//         // case "CHANGE-IS-DONE": {
-//         //     let isDone = 2;
-//         //     if (action.payload.status) {
-//         //         isDone = TaskStatuses.Completed;
-//         //     } else {
-//         //         isDone = TaskStatuses.New;
-//         //     }
-//         //     return {
-//         //         ...state,
-//         //         [action.payload.todolistId]: state[action.payload.todolistId].map((t) =>
-//         //             t.id === action.payload.id ? { ...t, status: isDone } : t,
-//         //         ),
-//         //     };
-//         // }
-//         // case "EDIT-SPAN-TASK": {
-//         //     return {
-//         //         ...state,
-//         //         [action.payload.todolistId]: state[action.payload.todolistId].map((t) =>
-//         //             t.id === action.payload.taskId ? { ...t, title: action.payload.title } : t,
-//         //         ),
-//         //     };
-//         // }
-//         // case "ADD-TASK": {
-//         //     if (action.payload.task.title.trim() !== "") {
-//         //         let task = action.payload.task;
-//         //         return {
-//         //             ...state,
-//         //             [action.payload.task.todoListId]: [task, ...state[action.payload.task.todoListId]],
-//         //         };
-//         //     } else return state;
-//         // }
-//         // case "ADD-TODOLIST": {
-//         //     return { ...state, [action.payload.todolist.id]: [] };
-//         // }
-//         // case "DELETE-TODOLIST": {
-//         //     let copyState = { ...state };
-//         //     delete copyState[action.payload.todolistId];
-//         //     return copyState;
-//         // }
-//         // case "SET-TODOLISTS": {
-//         //     let copyState = { ...state };
-//         //     action.payload.todolists.forEach((tl: any) => {
-//         //         copyState[tl.id] = [];
-//         //     });
-//         //     return copyState;
-//         // }
-//         case "CHANGE-TASK-ENTITY-STATUS": {
-//             return {
-//                 ...state,
-//                 [action.payload.todolistId]: state[action.payload.todolistId].map((t) =>
-//                     t.id === action.payload.id ? { ...t, entityStatus: action.payload.entityStatus } : t,
-//                 ),
-//             };
-//         }
-//         // case "SET-TASKS": {
-//         //     return {
-//         //         ...state,
-//         //         [action.payload.todolistId]: action.payload.tasks.map((t: any) => ({
-//         //             ...t,
-//         //             entityStatus: "idle",
-//         //         })),
-//         //     };
-//         // }
-//         default:
-//             return state;
-//     }
-// };
-
-// type RemoveTaskType = ReturnType<typeof removeTaskAC>;
-// export const removeTaskAC = (todolistId: string, id: string) => {
-//     return {
-//         type: "REMOVE-TASK",
-//         payload: { id, todolistId },
-//     } as const;
-// };
-
-// type ChangeIsDoneType = ReturnType<typeof changeIsDoneAC>;
-// export const changeIsDoneAC = (status: boolean, todolistId: string, id: string) => {
-//     return {
-//         type: "CHANGE-IS-DONE",
-//         payload: { status, todolistId, id },
-//     } as const;
-// };
-//
-// type EditSpanTaskType = ReturnType<typeof editSpanTaskAC>;
-// export const editSpanTaskAC = (title: string, todolistId: string, taskId: string) => {
-//     return {
-//         type: "EDIT-SPAN-TASK",
-//         payload: { title, todolistId, taskId },
-//     } as const;
-// };
-//
-// type AddTaskType = ReturnType<typeof addTaskAC>;
-// export const addTaskAC = (task: TaskType) => {
-//     return {
-//         type: "ADD-TASK",
-//         payload: { task },
-//     } as const;
-// };
-//
-// type DeleteTodolistType = ReturnType<typeof deleteTodolistAC>;
-// export const deleteTodolistAC = (todolistId: string) => {
-//     return {
-//         type: "DELETE-TODOLIST",
-//         payload: { todolistId },
-//     } as const;
-// };
-//
-// export type SetTasksType = ReturnType<typeof setTasksAC>;
-// export const setTasksAC = (tasks: TaskType[], todolistId: string) => {
-//     return {
-//         type: "SET-TASKS",
-//         payload: { todolistId, tasks },
-//     } as const;
-// };
-//
-// export type ChangeTaskEntityStatusType = ReturnType<typeof changeTaskEntityStatus>;
-// export const changeTaskEntityStatus = (todolistId: string, id: string, entityStatus: StatusType) => {
-//     return {
-//         type: "CHANGE-TASK-ENTITY-STATUS",
-//         payload: { todolistId, id, entityStatus },
-//     } as const;
-// };
-
-// THUNKS
 export const fetchTasksThunk = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(appActions.setStatus({ status: "loading" }));

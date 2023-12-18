@@ -3,6 +3,9 @@ import { Dispatch } from "redux";
 import { appActions, StatusType } from "./AppReducer";
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchTasksThunk } from "./TaskReducer";
+import { AppThunk } from "../store/store";
+import { ThunkDispatch } from "redux-thunk";
 
 export type TodolistActionType = any
 
@@ -35,6 +38,9 @@ const slice = createSlice({
         editSpanTodo: (state, action: PayloadAction<{todolistId: string, title: string}>) => {
             const index = state.findIndex(todo => todo.id === action.payload.todolistId)
             if (index !== -1) state[index].title = action.payload.title
+        },
+        deleteStateTodo: (state, action) => {
+            state.splice(0, state.length)
         }
     }
 })
@@ -48,13 +54,20 @@ export type TodolistsMainType = TodolistType & {
     entityStatus: StatusType;
 };
 
-export const fetchTodolistThunk = () => (dispatch: Dispatch) => {
+export const fetchTodolistThunk = () => (dispatch: ThunkDispatch<any, any, any>) => {
     dispatch(appActions.setStatus({status: "loading"}));
     todolistAPI
         .getTodo()
         .then((res) => {
             dispatch(todolistActions.setTodolist({todolists: res.data}));
             dispatch(appActions.setStatus({status: "succeeded"}));
+            return res.data
+        })
+        .then((todos) => {
+            console.log(todos)
+            for (let i = 0; i<todos.length;i++) {
+                dispatch(fetchTasksThunk(todos[i].id));
+            }
         })
         .catch((error) => {
             handleServerAppError(error, dispatch);

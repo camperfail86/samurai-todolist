@@ -1,9 +1,6 @@
-import { AnyAction, applyMiddleware, combineReducers, legacy_createStore } from "redux";
-// import { TodolistActionType, TodolistReducer } from "../reducers/TodolistReducer";
+import { AnyAction, combineReducers } from "redux";
 import { TaskActionType, taskReducer } from "../reducers/TaskReducer";
 import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
-// import { AppReducer } from "../reducers/AppReducer";
-// import { LoginReducer } from "../reducers/LoginReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { loginReducer } from "../reducers/LoginReducer";
 import { appReducer } from "../reducers/AppReducer";
@@ -23,3 +20,5 @@ export const store = configureStore({
     reducer: rootReducer
 });
 
+// @ts-ignore
+window.store = store;

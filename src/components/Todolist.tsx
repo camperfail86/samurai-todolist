@@ -30,9 +30,9 @@ const Todolist = memo((props: PropsType) => {
     const dispatch = useAppDispatch();
     const tasks = useSelector<AppStoreType, TaskMainType>((state) => state.tasks);
 
-    useEffect(() => {
-        dispatch(fetchTasksThunk(props.todolistId));
-    }, []);
+    // useEffect(() => {
+        // dispatch(fetchTasksThunk(props.todolistId));
+    // }, []);
 
     let tasksForTodolist = tasks[props.todolistId];
     if (props.filter === "active") {
@@ -71,10 +71,6 @@ const Todolist = memo((props: PropsType) => {
         },
         [props.editSpanTodo, props.todolistId],
     );
-
-    // const onChangeTitle = useCallback((title: string) => {
-    //     dispatch(editSpanTaskAC(title, props.todolistId, t.id))
-    // },[t.id, dispatch])
 
     return (
         <div>
