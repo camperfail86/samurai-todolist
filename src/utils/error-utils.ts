@@ -1,24 +1,29 @@
 import { ResponseType } from "../api/todolist-api";
-// import { setErrorAC, setStatusAC } from "../reducers/AppReducer";
 import { Dispatch } from "redux";
 import { loginActions } from "../reducers/LoginReducer";
 import { appActions } from "../reducers/AppReducer";
+import axios from "axios";
 
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: Dispatch) => {
     if (data.messages.length) {
         dispatch(appActions.setError({error: data.messages[0]}));
-        // dispatch(setErrorAC(data.messages[0]));
     } else {
         dispatch(appActions.setError({error: "Some error occurred"}));
-        // dispatch(setErrorAC("Some error occurred"));
     }
-    // dispatch(appActions.setStatus({status: "failed"}));;
     dispatch(appActions.setStatus({status: "failed"}));
 };
 
-export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch) => {
-    // dispatch(setErrorAC(error.message));
-    dispatch(appActions.setError({error: error.message}));
-    // dispatch(appActions.setStatus({status: "failed"}));;
+export const handleServerNetworkError = (err: { message: string }, dispatch: Dispatch) => {
+    let errorMessage = "Some error occurred";
+
+    if (axios.isAxiosError(err)) {
+        errorMessage = err.response?.data?.message || err?.message || errorMessage;
+    } else if (err instanceof Error) {
+        errorMessage = `Native error: ${err.message}`;
+    } else {
+        errorMessage = JSON.stringify(err);
+    }
+
+    dispatch(appActions.setError({error: errorMessage}));
     dispatch(appActions.setStatus({status: "failed"}));
 };

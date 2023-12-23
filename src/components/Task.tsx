@@ -1,11 +1,12 @@
 import React, { memo, useCallback } from "react";
-import { editSpanTaskTC, fetchDeleteTaskTC, TaskStatuses } from "../reducers/TaskReducer";
+import { taskThunks } from "../reducers/TaskReducer";
 import Checkbox from "@mui/material/Checkbox";
 import { EditableSpan } from "./EditableSpan";
 import { ButtonDelete } from "./ButtonDelete";
 import { TaskType } from "../api/task-api";
 import { useAppDispatch } from "../hooks/hooks";
 import { StatusType } from "../reducers/AppReducer";
+import { TaskStatuses } from "../utils/enums";
 
 export type TaskPropsType = {
     task: TaskType;
@@ -15,11 +16,10 @@ export type TaskPropsType = {
 };
 
 export const Task = memo(({ entityStatus, task, changeIsDone, todolistId }: TaskPropsType) => {
-    // const dispatch: ThunkDispatch<AppStoreType, any, TaskActionType> = useDispatch()
     const dispatch = useAppDispatch();
     const onClickHandler = useCallback(() => {
         // dispatch(removeTaskAC(todolistId, task.id))
-        dispatch(fetchDeleteTaskTC(todolistId, task.id));
+        dispatch(taskThunks.deleteTask({todolistId, taskId: task.id}));
     }, [task.id, dispatch]);
 
     const onChangeHandler = useCallback(
@@ -29,7 +29,7 @@ export const Task = memo(({ entityStatus, task, changeIsDone, todolistId }: Task
 
     const onChangeTitle = useCallback(
         (title: string) => {
-            dispatch(editSpanTaskTC(title, todolistId, task.id));
+            dispatch(taskThunks.editSpanTask({title, todolistId, id: task.id}));
         },
         [task.id, dispatch],
     );

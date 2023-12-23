@@ -1,6 +1,6 @@
 import { instance, ResponseType, TodolistType } from "./todolist-api";
-import { TaskStatuses } from "../reducers/TaskReducer";
 import { StatusType } from "../reducers/AppReducer";
+import { TaskStatuses } from "../utils/enums";
 
 export const tasksAPI = {
     getTasks(todolistId: string) {

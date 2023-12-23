@@ -3,21 +3,17 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { FullInput } from "./FullInput";
 import {
-    changeFilterTC,
-    createTodolistTC,
-    deleteTodolistTC,
-    editSpanTodoTC,
-    fetchTodolistThunk,
-    FilterValuesType,
-    TodolistsMainType,
+    FilterValuesType, todolistActions,
+    TodolistsMainType, todolistThunks
 } from "../reducers/TodolistReducer";
 import Paper from "@mui/material/Paper";
 import Todolist from "./Todolist";
 import { useSelector } from "react-redux";
 import { AppStoreType } from "../store/store";
-import { changeIsDoneTC, TaskStatuses } from "../reducers/TaskReducer";
+import { taskThunks } from "../reducers/TaskReducer";
 import { useAppDispatch } from "../hooks/hooks";
 import { Navigate } from "react-router-dom";
+import { TaskStatuses } from "../utils/enums";
 
 const paperStyle = {
     padding: "10px 15px",
@@ -38,41 +34,41 @@ export const TodolistList = () => {
 
     const changeIsDone = useCallback(
         (status: TaskStatuses, todolistId: string, id: string) => {
-            dispatch(changeIsDoneTC(status, todolistId, id));
+            dispatch(taskThunks.changeIsDone({status, todolistId, id}));
         },
         [dispatch],
     );
 
     const addTodolist = useCallback(
         (title: string) => {
-            dispatch(createTodolistTC(title));
+            dispatch(todolistThunks.createTodolist({title}));
         },
         [dispatch],
     );
 
     const changeFilter = useCallback(
         (todolistId: string, value: FilterValuesType) => {
-            dispatch(changeFilterTC(todolistId, value));
+            dispatch(todolistActions.changeFilter({todolistId, value}));
         },
         [dispatch],
     );
 
     const deleteTodolist = useCallback(
         (todolistId: string) => {
-            dispatch(deleteTodolistTC(todolistId));
+            dispatch(todolistThunks.deleteTodolist({todolistId}));
         },
         [dispatch],
     );
 
     const editSpanTodo = useCallback(
         (title: string, todolistId: string) => {
-            dispatch(editSpanTodoTC(todolistId, title));
+            dispatch(todolistThunks.editTitleTodo({todolistId, title}));
         },
         [dispatch],
     );
 
     useEffect(() => {
-        dispatch(fetchTodolistThunk());
+        dispatch(todolistThunks.fetchTodolists());
     }, []);
 
     if (!isLoggedIn) {

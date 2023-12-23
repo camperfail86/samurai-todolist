@@ -3,16 +3,16 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { FullInput } from "./FullInput";
 import { EditableSpan } from "./EditableSpan";
 import s from "./todolist.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppStoreType } from "../store/store";
-import { AddTaskTC, fetchTasksThunk, TaskMainType, TaskStatuses } from "../reducers/TaskReducer";
+import {  TaskMainType, taskThunks } from "../reducers/TaskReducer";
 import { Task } from "./Task";
 import { ButtonFilter } from "./ButtonFilter";
 import { ButtonDelete } from "./ButtonDelete";
-import { FilterValuesType, TodolistActionType } from "../reducers/TodolistReducer";
-import { ThunkDispatch } from "redux-thunk";
+import { FilterValuesType, todolistThunks } from "../reducers/TodolistReducer";
 import { useAppDispatch } from "../hooks/hooks";
 import { StatusType } from "../reducers/AppReducer";
+import { TaskStatuses } from "../utils/enums";
 
 type PropsType = {
     changeFilter: (todolistId: string, value: FilterValuesType) => void;
@@ -26,13 +26,12 @@ type PropsType = {
 };
 
 const Todolist = memo((props: PropsType) => {
-    // const dispatch: ThunkDispatch<AppStoreType, any, TodolistActionType> = useDispatch()
     const dispatch = useAppDispatch();
     const tasks = useSelector<AppStoreType, TaskMainType>((state) => state.tasks);
 
-    // useEffect(() => {
-        // dispatch(fetchTasksThunk(props.todolistId));
-    // }, []);
+    useEffect(() => {
+        dispatch(taskThunks.fetchTasks(props.todolistId));
+    }, []);
 
     let tasksForTodolist = tasks[props.todolistId];
     if (props.filter === "active") {
@@ -56,7 +55,7 @@ const Todolist = memo((props: PropsType) => {
 
     const addTaskCallback = useCallback(
         (title: string) => {
-            dispatch(AddTaskTC(props.todolistId, title));
+            dispatch(taskThunks.addTask({todolistId: props.todolistId, title}));
         },
         [props.todolistId, dispatch],
     );

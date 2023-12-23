@@ -1,27 +1,12 @@
 import React, { useCallback, useEffect } from "react";
 import "./App.css";
-import Todolist from "./components/Todolist";
-import { FullInput } from "./components/FullInput";
 import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Container from "@mui/material/Container";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
-import Grid from "@mui/material/Grid";
-import {
-    changeFilterTC,
-    createTodolistTC,
-    deleteTodolistTC,
-    editSpanTodoTC,
-    fetchTodolistThunk,
-    FilterValuesType,
-    TodolistsMainType,
-} from "./reducers/TodolistReducer";
-import { changeIsDoneTC, TaskStatuses } from "./reducers/TaskReducer";
 import { useSelector } from "react-redux";
 import { AppStoreType } from "./store/store";
 import { useAppDispatch } from "./hooks/hooks";

@@ -3,50 +3,69 @@ import { Dispatch } from "redux";
 import { appActions, StatusType } from "./AppReducer";
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchTasksThunk } from "./TaskReducer";
-import { AppThunk } from "../store/store";
+import { taskThunks } from "./TaskReducer";
 import { ThunkDispatch } from "redux-thunk";
+import { ResultCode } from "../utils/enums";
+import { createAppAsyncThunk } from "../utils/createAppAsyncThunk";
 
-export type TodolistActionType = any
+export type TodolistActionType = any;
 
 const slice = createSlice({
     initialState: [] as TodolistsMainType[],
-    name: 'todolist-slice',
+    name: "todolist-slice",
     reducers: {
-        deleteTodolist: (state, action: PayloadAction<{todolistId: string}>) => {
-            const index = state.findIndex(todo => todo.id === action.payload.todolistId)
-            if (index !== -1) {
-                state.splice(index, 1)
-            }
-        },
-        addTodolist: (state, action: PayloadAction<{todolist: TodolistType}>) => {
-            state.unshift({...action.payload.todolist, filter: "all", entityStatus: "idle"})
-        },
-        setTodolist: (state, action: PayloadAction<{todolists: TodolistType[]}>) => {
+        // deleteTodolist: (state, action: PayloadAction<{ todolistId: string }>) => {
+        //     const index = state.findIndex((todo) => todo.id === action.payload.todolistId);
+        //     if (index !== -1) {
+        //         state.splice(index, 1);
+        //     }
+        // },
+        // addTodolist: (state, action: PayloadAction<{ todolist: TodolistType }>) => {
+        //     state.unshift({ ...action.payload.todolist, filter: "all", entityStatus: "idle" });
+        // },
+        setTodolist: (state, action: PayloadAction<{ todolists: TodolistType[] }>) => {
             action.payload.todolists.forEach((tl) => {
                 state.push({ ...tl, filter: "all", entityStatus: "idle" });
             });
         },
-        changeTodolistEntityStatus: (state, action: PayloadAction<{id: string, entityStatus: StatusType}>) => {
-            const index = state.findIndex(todo => todo.id === action.payload.id)
-            if (index !== -1) state[index].entityStatus = action.payload.entityStatus
+        changeTodolistEntityStatus: (state, action: PayloadAction<{ id: string; entityStatus: StatusType }>) => {
+            const index = state.findIndex((todo) => todo.id === action.payload.id);
+            if (index !== -1) state[index].entityStatus = action.payload.entityStatus;
         },
-        changeFilter: (state, action: PayloadAction<{todolistId: string, value: FilterValuesType}>) => {
-            const index = state.findIndex(todo => todo.id === action.payload.todolistId)
-            if (index !== -1) state[index].filter = action.payload.value
+        changeFilter: (state, action: PayloadAction<{ todolistId: string; value: FilterValuesType }>) => {
+            const index = state.findIndex((todo) => todo.id === action.payload.todolistId);
+            if (index !== -1) state[index].filter = action.payload.value;
         },
-        editSpanTodo: (state, action: PayloadAction<{todolistId: string, title: string}>) => {
-            const index = state.findIndex(todo => todo.id === action.payload.todolistId)
-            if (index !== -1) state[index].title = action.payload.title
-        },
+        // editSpanTodo: (state, action: PayloadAction<{ todolistId: string; title: string }>) => {
+        //     const index = state.findIndex((todo) => todo.id === action.payload.todolistId);
+        //     if (index !== -1) state[index].title = action.payload.title;
+        // },
         deleteStateTodo: (state, action) => {
-            state.splice(0, state.length)
-        }
-    }
-})
-
-export const todolistReducer = slice.reducer
-export const todolistActions = slice.actions
+            state.splice(0, state.length);
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(createTodolist.fulfilled, (state, action) => {
+                state.unshift({ ...action.payload.todolist, filter: "all", entityStatus: "idle" });
+            })
+            .addCase(deleteTodolist.fulfilled, (state, action) => {
+                const index = state.findIndex((todo) => todo.id === action.payload.todolistId);
+                if (index !== -1) {
+                    state.splice(index, 1);
+                }
+            })
+            .addCase(fetchTodolists.fulfilled, (state, action) => {
+                action.payload.todolists.forEach((tl) => {
+                    state.push({ ...tl, filter: "all", entityStatus: "idle" });
+                });
+            })
+            .addCase(editTitleTodo.fulfilled, (state, action)=>{
+                    const index = state.findIndex((todo) => todo.id === action.payload.todolistId);
+                    if (index !== -1) state[index].title = action.payload.title;
+            });
+    },
+});
 
 export type FilterValuesType = "all" | "completed" | "active";
 export type TodolistsMainType = TodolistType & {
@@ -54,72 +73,155 @@ export type TodolistsMainType = TodolistType & {
     entityStatus: StatusType;
 };
 
-export const fetchTodolistThunk = () => (dispatch: ThunkDispatch<any, any, any>) => {
-    dispatch(appActions.setStatus({status: "loading"}));
-    todolistAPI
-        .getTodo()
-        .then((res) => {
-            dispatch(todolistActions.setTodolist({todolists: res.data}));
-            dispatch(appActions.setStatus({status: "succeeded"}));
-            return res.data
-        })
-        .then((todos) => {
-            console.log(todos)
-            for (let i = 0; i<todos.length;i++) {
-                dispatch(fetchTasksThunk(todos[i].id));
-            }
-        })
-        .catch((error) => {
-            handleServerAppError(error, dispatch);
-        });
-};
+// export const fetchTodolistThunk = () => (dispatch: ThunkDispatch<any, any, any>) => {
+//     dispatch(appActions.setStatus({ status: "loading" }));
+//     todolistAPI
+//         .getTodo()
+//         .then((res) => {
+//             dispatch(todolistActions.setTodolist({ todolists: res.data }));
+//             dispatch(appActions.setStatus({ status: "succeeded" }));
+//             return res.data;
+//         })
+//         .then((todos) => {
+//             for (let i = 0; i < todos.length; i++) {
+//                 dispatch(taskThunks.fetchTasks(todos[i].id));
+//             }
+//         })
+//         .catch((error) => {
+//             handleServerAppError(error, dispatch);
+//         });
+// };
 
-export const deleteTodolistTC = (todolistId: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(appActions.setStatus({status: "loading"}));
-        dispatch(todolistActions.changeTodolistEntityStatus({id: todolistId, entityStatus: "loading"}));
-        todolistAPI.deleteTodo(todolistId).then((res) => {
-            dispatch(todolistActions.deleteTodolist({todolistId: todolistId}));
-            dispatch(appActions.setStatus({status: "succeeded"}));
-            dispatch(todolistActions.changeTodolistEntityStatus({id: todolistId, entityStatus: "succeeded"}));
-        });
-    };
-};
+const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>('todolists/fetchTodolist', async (arg, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+    dispatch(appActions.setStatus({ status: "loading" }));
+    try {
+        const res = await todolistAPI.getTodo()
+        // dispatch(todolistActions.setTodolist({ todolists: res.data }));
+        dispatch(appActions.setStatus({ status: "succeeded" }));
+        console.log(res.data)
+        return {todolists: res.data};
+    } catch (e: any) {
+        handleServerAppError(e, dispatch);
+        return rejectWithValue(null)
+    }
 
-export const createTodolistTC = (title: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(appActions.setStatus({status: "loading"}));
-        todolistAPI
-            .createTodo(title)
-            .then((res) => {
-                if (res.data.resultCode === 0) {
-                    dispatch(appActions.setStatus({status: "succeeded"}));
-                    dispatch(todolistActions.addTodolist({todolist: res.data.data.item}));
-                } else {
-                    if (res.data.messages.length) {
-                        dispatch(appActions.setError({error: res.data.messages[0]}))
-                    }
-                    dispatch(appActions.setStatus({status: "failed"}));
+        // .then((todos) => {
+        //     for (let i = 0; i < todos.length; i++) {
+        //         dispatch(taskThunks.fetchTasks(todos[i].id));
+        //     }
+        // })
+})
+
+
+// export const deleteTodolistTC = (todolistId: string) => {
+//     return (dispatch: Dispatch) => {
+//         dispatch(appActions.setStatus({ status: "loading" }));
+//         dispatch(todolistActions.changeTodolistEntityStatus({ id: todolistId, entityStatus: "loading" }));
+//         todolistAPI.deleteTodo(todolistId).then((res) => {
+//             dispatch(todolistActions.deleteTodolist({ todolistId: todolistId }));
+//             dispatch(appActions.setStatus({ status: "succeeded" }));
+//             dispatch(todolistActions.changeTodolistEntityStatus({ id: todolistId, entityStatus: "succeeded" }));
+//         });
+//     };
+// };
+
+const deleteTodolist = createAppAsyncThunk<{ todolistId: string }, { todolistId: string }>(
+    "todolist/deleteTodolist",
+    async (arg, thunkAPI) => {
+        const { dispatch, rejectWithValue } = thunkAPI;
+        dispatch(appActions.setStatus({ status: "loading" }));
+        dispatch(todolistActions.changeTodolistEntityStatus({ id: arg.todolistId, entityStatus: "loading" }));
+        try {
+            const res = await todolistAPI.deleteTodo(arg.todolistId);
+            dispatch(appActions.setStatus({ status: "succeeded" }));
+            dispatch(todolistActions.changeTodolistEntityStatus({ id: arg.todolistId, entityStatus: "succeeded" }));
+            return { todolistId: arg.todolistId }
+        } catch (e: any) {
+            handleServerNetworkError(e, dispatch);
+            return rejectWithValue(null);
+        }
+    },
+);
+
+// export const createTodolistTC = (title: string) => {
+//     return (dispatch: Dispatch) => {
+//         dispatch(appActions.setStatus({ status: "loading" }));
+//         todolistAPI
+//             .createTodo(title)
+//             .then((res) => {
+//                 if (res.data.resultCode === ResultCode.success) {
+//                     dispatch(appActions.setStatus({ status: "succeeded" }));
+//                     dispatch(todolistActions.addTodolist({ todolist: res.data.data.item }));
+//                 } else {
+//                     if (res.data.messages.length) {
+//                         dispatch(appActions.setError({ error: res.data.messages[0] }));
+//                     }
+//                     dispatch(appActions.setStatus({ status: "failed" }));
+//                 }
+//             })
+//             .catch((e) => {
+//                 handleServerNetworkError(e, dispatch);
+//             });
+//     };
+// };
+
+const createTodolist = createAppAsyncThunk<{ todolist: TodolistType }, { title: string }>(
+    "todolist/createTodolist",
+    async (arg, thunkAPI) => {
+        const { dispatch, rejectWithValue } = thunkAPI;
+        dispatch(appActions.setStatus({ status: "loading" }));
+        try {
+            const res = await todolistAPI.createTodo(arg.title);
+            if (res.data.resultCode === ResultCode.success) {
+                dispatch(appActions.setStatus({ status: "succeeded" }));
+                console.log(res.data.data.item);
+                return { todolist: res.data.data.item };
+            } else {
+                if (res.data.messages.length) {
+                    dispatch(appActions.setError({ error: res.data.messages[0] }));
                 }
-            })
-            .catch((e) => {
-                handleServerNetworkError(e, dispatch);
-            });
-    };
-};
+                dispatch(appActions.setStatus({ status: "failed" }));
+                return rejectWithValue(null);
+            }
+        } catch (e: any) {
+            handleServerNetworkError(e, dispatch);
+            return rejectWithValue(null);
+        }
+    },
+);
 
-export const editSpanTodoTC = (todolistId: string, title: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(appActions.setStatus({status: "loading"}));
-        todolistAPI.updateTodo(todolistId, title).then((res) => {
-            dispatch(todolistActions.editSpanTodo({todolistId: todolistId, title: title}));
-            dispatch(appActions.setStatus({status: "succeeded"}));
-        });
-    };
-};
+// export const editSpanTodoTC = (todolistId: string, title: string) => {
+//     return (dispatch: Dispatch) => {
+//         dispatch(appActions.setStatus({ status: "loading" }));
+//         todolistAPI.updateTodo(todolistId, title).then((res) => {
+//             dispatch(todolistActions.editSpanTodo({ todolistId: todolistId, title: title }));
+//             dispatch(appActions.setStatus({ status: "succeeded" }));
+//         });
+//     };
+// };
 
-export const changeFilterTC = (todolistId: string, value: FilterValuesType) => {
-    return (dispatch: Dispatch) => {
-        dispatch(todolistActions.changeFilter({todolistId, value}));
-    };
-};
+const editTitleTodo = createAppAsyncThunk<any, { todolistId: string, title: string }>("todolist/editTitleTodo",
+    async (arg, thunkAPI) => {
+        const {dispatch, rejectWithValue} = thunkAPI
+        dispatch(appActions.setStatus({ status: "loading" }));
+        try {
+            const res = await todolistAPI.updateTodo(arg.todolistId, arg.title)
+            dispatch(appActions.setStatus({ status: "succeeded" }));
+            return { todolistId: arg.todolistId, title: arg.title }
+        } catch (e: any) {
+            handleServerNetworkError(e, dispatch)
+            return rejectWithValue(null)
+        }
+    });
+
+// export const changeFilterTC = (todolistId: string, value: FilterValuesType) => {
+//     return (dispatch: Dispatch) => {
+//         dispatch(todolistActions.changeFilter({ todolistId, value }));
+//     };
+// };
+
+
+export const todolistReducer = slice.reducer;
+export const todolistActions = slice.actions;
+export const todolistThunks = { createTodolist, deleteTodolist, editTitleTodo, fetchTodolists };

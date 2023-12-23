@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { tasksAPI } from "../api/task-api";
-import { TaskStatuses } from "../reducers/TaskReducer";
+import { TaskStatuses } from "../utils/enums";
 
 export default {
     title: "API-tasks",
