@@ -12,12 +12,13 @@ import { AppStoreType } from "./store/store";
 import { useAppDispatch } from "./hooks/hooks";
 import { ErrorSnackBar } from "./components/common/ErrorSnackBar";
 import LinearProgress from "@mui/material/LinearProgress";
-import { initializeAppTC, StatusType } from "./reducers/AppReducer";
+import { appThunks, StatusType } from "./reducers/AppReducer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { TodolistList } from "./components/TodolistList";
 import { Login } from "./features/login/Login";
 import CircularProgress from "@mui/material/CircularProgress";
-import { logoutTC } from "./reducers/LoginReducer";
+import { loginThunks } from "./reducers/LoginReducer";
+import { todolistThunks } from "./reducers/TodolistReducer";
 
 const loaderStyle = {
     position: "absolute",
@@ -32,12 +33,13 @@ function App() {
     const status = useSelector<AppStoreType, StatusType>((state) => state.app.status);
     const initialized = useSelector<AppStoreType>((state) => state.app.initialized);
     const isLoggedIn = useSelector<AppStoreType>((state) => state.login.isLoggedIn);
+
     useEffect(() => {
-        dispatch(initializeAppTC());
+        dispatch(appThunks.initializeApp());
     }, []);
 
     const logoutHandler = useCallback(() => {
-        dispatch(logoutTC());
+        dispatch(loginThunks.logout());
     }, [dispatch]);
 
     if (!initialized) {

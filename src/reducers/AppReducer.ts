@@ -1,8 +1,8 @@
-import { Dispatch } from "redux";
 import { authAPI } from "../api/auth-api";
-import { loginActions } from "./LoginReducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk } from "../store/store";
+import { createAppAsyncThunk } from "../utils/createAppAsyncThunk";
+import { ResultCode } from "../utils/enums";
+import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 
 export type StatusType = "idle" | "loading" | "succeeded" | "failed";
 
@@ -24,16 +24,34 @@ export const slice = createSlice({
             state.initialized = action.payload.value
         }
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(initializeApp.fulfilled, (state, action) => {
+                state.initialized = action.payload.value
+            })
+    }
 })
 
+const initializeApp = createAppAsyncThunk('app/initializeApp', async (_, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI;
+    try {
+        const res = await authAPI.me()
+            if (res.data.resultCode === ResultCode.success) {
+                // dispatch(loginActions.setLoggedIn({value: true}));
+                return {value: true}
+            } else {
+                handleServerAppError(res.data, dispatch);
+                return rejectWithValue(null)
+            }
+    } catch (e: any) {
+        handleServerNetworkError(e, dispatch);
+        return rejectWithValue(null);
+    } finally {
+        dispatch(appActions.setInitialized({value: true}));
+        dispatch(appActions.setStatus({ status: "succeeded" }));
+    }
+})
+
+export const appThunks = {initializeApp}
 export const appReducer = slice.reducer
 export const appActions = slice.actions
-
-export const initializeAppTC = (): AppThunk => (dispatch: Dispatch) => {
-    authAPI.me().then((res) => {
-        if (res.data.resultCode === 0) {
-            dispatch(loginActions.setLoggedIn({value: true}));
-        }
-        dispatch(appActions.setInitialized({value: true}));
-    });
-};

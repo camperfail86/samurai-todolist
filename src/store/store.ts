@@ -14,7 +14,7 @@ export const rootReducer = combineReducers({
 });
 export type AppActionType = TodolistActionType | TaskActionType;
 export type AppDispatchType = ThunkDispatch<AppStoreType, unknown, AppActionType>;
-export type AppThunk = ThunkAction<void, AppStoreType, unknown, AnyAction>
+// export type AppThunk = ThunkAction<void, AppStoreType, unknown, AnyAction>
 export type AppStoreType = ReturnType<typeof store.getState>;
 export type AppRootStateType = ReturnType<typeof rootReducer>
 

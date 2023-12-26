@@ -259,44 +259,6 @@ export const editSpanTask = createAppAsyncThunk<
     }
 });
 
-// export const editSpanTaskTC = (title: string, todolistId: string, id: string) => {
-//     return (dispatch: Dispatch, getState: () => AppStoreType) => {
-//         const state = getState();
-//         const task = state.tasks[todolistId].find((t) => t.id === id);
-//         if (!task) {
-//             console.warn("no task");
-//             return;
-//         }
-//         const model: UpdateTaskModelType = {
-//             title: title,
-//             description: task.description,
-//             status: task.status,
-//             priority: task.priority,
-//             startDate: task.startDate,
-//             deadline: task.deadline,
-//         };
-//         dispatch(appActions.setStatus({ status: "loading" }));
-//         tasksAPI
-//             .updateTask(todolistId, id, model)
-//             .then((res) => {
-//                 if (res.data.resultCode === 0) {
-//                     dispatch(taskActions.editSpanTask({ title, todolistId, taskId: id }));
-//                     dispatch(appActions.setStatus({ status: "succeeded" }));
-//                     dispatch(todolistActions.changeTodolistEntityStatus({ id: todolistId, entityStatus: "succeeded" }));
-//                 } else {
-//                     handleServerAppError(res.data, dispatch);
-//                 }
-//             })
-//             .catch((e) => {
-//                 handleServerNetworkError(e, dispatch);
-//                 dispatch(todolistActions.changeTodolistEntityStatus({ id: todolistId, entityStatus: "failed" }));
-//             })
-//             .finally(() => {
-//                 dispatch(appActions.setStatus({ status: "succeeded" }));
-//             });
-//     };
-// };
-
 export const taskReducer = slice.reducer;
 export const taskActions = slice.actions;
 export const taskThunks = { fetchTasks, addTask, changeIsDone, editSpanTask, deleteTask };

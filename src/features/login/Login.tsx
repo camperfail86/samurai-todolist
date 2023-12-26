@@ -9,10 +9,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import { useAppDispatch } from "../../hooks/hooks";
-import { loginTC } from "../../reducers/LoginReducer";
 import { useSelector } from "react-redux";
 import { AppStoreType } from "../../store/store";
 import { Navigate, redirect, redirectDocument } from "react-router-dom";
+import { loginThunks } from "../../reducers/LoginReducer";
 
 export type LoginType = {
     password?: string;
@@ -47,8 +47,8 @@ export const Login = () => {
             password: "",
             rememberMe: false,
         },
-        onSubmit: (values) => {
-            dispatch(loginTC(values));
+        onSubmit: (data) => {
+            dispatch(loginThunks.login({data}));
         },
     });
     if (isLoggedIn) {
