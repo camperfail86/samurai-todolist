@@ -45,13 +45,15 @@ const login = createAppAsyncThunk<{ value: boolean }, { data: LoginType }>("logi
             return { value: true };
         } else {
             dispatch(appActions.setStatus({ status: "failed" }));
-            handleServerAppError(res.data, dispatch);
-            return rejectWithValue(null);
+            if (!res.data.fieldsErrors.length) {
+                handleServerAppError(res.data, dispatch);
+            }
+            return rejectWithValue(res.data);
         }
     } catch (e: any) {
         dispatch(appActions.setStatus({ status: "failed" }));
         handleServerNetworkError(e, dispatch);
-        return rejectWithValue(null);
+        return rejectWithValue(e);
     }
 });
 

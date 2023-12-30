@@ -9,7 +9,7 @@ import {
 import Paper from "@mui/material/Paper";
 import Todolist from "./Todolist";
 import { useSelector } from "react-redux";
-import { AppStoreType } from "../store/store";
+import { AppRootStateType } from "../store/store";
 import { taskThunks } from "../reducers/TaskReducer";
 import { useAppDispatch } from "../hooks/hooks";
 import { Navigate } from "react-router-dom";
@@ -28,9 +28,9 @@ type TodolistListType = {
 };
 
 export const TodolistList = () => {
-    const todolists = useSelector<AppStoreType, Array<TodolistsMainType>>((state) => state.todolists);
+    const todolists = useSelector<AppRootStateType, Array<TodolistsMainType>>((state) => state.todolists);
     const dispatch = useAppDispatch();
-    const isLoggedIn = useSelector<AppStoreType>((state) => state.login.isLoggedIn);
+    const isLoggedIn = useSelector<AppRootStateType>((state) => state.login.isLoggedIn);
 
     const changeIsDone = useCallback(
         (status: TaskStatuses, todolistId: string, id: string) => {

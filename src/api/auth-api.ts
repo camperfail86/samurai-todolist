@@ -1,9 +1,10 @@
 import { instance } from "./todolist-api";
 import { LoginType } from "../features/login/Login";
+import { BaseResponseType } from "../utils/commons.types";
 
 export const authAPI = {
     login(data: LoginType) {
-        return instance.post<ResponseType<{ userId?: number }>>(`/auth/login`, data);
+        return instance.post<BaseResponseType<{ userId?: number }>>(`/auth/login`, data);
     },
     me() {
         return instance.get<ResponseType<{ id: number; email: string; login: string }>>("auth/me");

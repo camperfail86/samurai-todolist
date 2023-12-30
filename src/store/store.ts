@@ -6,20 +6,18 @@ import { loginReducer } from "../reducers/LoginReducer";
 import { appReducer } from "../reducers/AppReducer";
 import { TodolistActionType, todolistReducer } from "../reducers/TodolistReducer";
 
-export const rootReducer = combineReducers({
-    todolists: todolistReducer,
-    tasks: taskReducer,
-    app: appReducer,
-    login: loginReducer,
-});
-export type AppActionType = TodolistActionType | TaskActionType;
-export type AppDispatchType = ThunkDispatch<AppStoreType, unknown, AppActionType>;
-// export type AppThunk = ThunkAction<void, AppStoreType, unknown, AnyAction>
-export type AppStoreType = ReturnType<typeof store.getState>;
-export type AppRootStateType = ReturnType<typeof rootReducer>
+// export type AppActionType = TodolistActionType | TaskActionType;
+export type AppDispatchType = typeof store.dispatch;
+// export type AppStoreType = ReturnType<typeof store.getState>;
+export type AppRootStateType = ReturnType<typeof store.getState>
 
 export const store = configureStore({
-    reducer: rootReducer
+    reducer: {
+        todolists: todolistReducer,
+        tasks: taskReducer,
+        app: appReducer,
+        login: loginReducer,
+    }
 });
 
 // @ts-ignore

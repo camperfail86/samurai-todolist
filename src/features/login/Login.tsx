@@ -10,9 +10,10 @@ import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import { useAppDispatch } from "../../hooks/hooks";
 import { useSelector } from "react-redux";
-import { AppStoreType } from "../../store/store";
-import { Navigate, redirect, redirectDocument } from "react-router-dom";
+import { AppRootStateType } from "../../store/store";
+import { Navigate } from "react-router-dom";
 import { loginThunks } from "../../reducers/LoginReducer";
+import { BaseResponseType } from "../../utils/commons.types";
 
 export type LoginType = {
     password?: string;
@@ -21,34 +22,42 @@ export type LoginType = {
     captcha?: boolean;
 };
 
-const validate = (values: LoginType) => {
-    const errors: LoginType = {};
-    if (!values.email) {
-        errors.email = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = "Invalid email address";
-    }
-
-    if (!values.password) {
-        errors.password = "Required";
-    } else if (values.password.length <= 3) {
-        errors.password = "Must be 3 characters or less";
-    }
-    return errors;
-};
+// const validate = (values: LoginType) => {
+//     const errors: LoginType = {};
+//     // if (!values.email) {
+//     //     errors.email = "Required";
+//     // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+//     //     errors.email = "Invalid email address";
+//     // }
+//
+//     // if (!values.password) {
+//     //     errors.password = "Required";
+//     // } else if (values.password.length <= 3) {
+//     //     errors.password = "Must be 3 characters or less";
+//     // }
+//     return errors;
+// };
 
 export const Login = () => {
     const dispatch = useAppDispatch();
-    const isLoggedIn = useSelector<AppStoreType>((state) => state.login.isLoggedIn);
+    const isLoggedIn = useSelector<AppRootStateType>((state) => state.login.isLoggedIn);
     const formik = useFormik({
-        validate,
+        // validate,
         initialValues: {
             email: "",
             password: "",
             rememberMe: false,
         },
-        onSubmit: (data) => {
-            dispatch(loginThunks.login({data}));
+        onSubmit: (data, formikHelpers) => {
+            dispatch(loginThunks.login({data}))
+                .unwrap()
+                .catch((e: BaseResponseType) => {
+                    if (e.fieldsErrors) {
+                        for (let i = 0; i < e.fieldsErrors.length; i++) {
+                            formikHelpers.setFieldError(e.fieldsErrors[i].field, e.fieldsErrors[i].error)
+                        }
+                    }
+                })
         },
     });
     if (isLoggedIn) {
@@ -73,14 +82,14 @@ export const Login = () => {
                         </FormLabel>
                         <FormGroup>
                             <TextField label="Email" margin="normal" {...formik.getFieldProps("email")} />
-                            {formik.touched.email && formik.errors.email && <div>{formik.errors.email}</div>}
+                            {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
                             <TextField
                                 type="password"
                                 label="Password"
                                 margin="normal"
                                 {...formik.getFieldProps("password")}
                             />
-                            {formik.touched.password && formik.errors.password && <div>{formik.errors.password}</div>}
+                            {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
                             <FormControlLabel
                                 label={"Remember me"}
                                 control={

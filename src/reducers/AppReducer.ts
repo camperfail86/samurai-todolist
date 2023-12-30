@@ -40,7 +40,7 @@ const initializeApp = createAppAsyncThunk('app/initializeApp', async (_, thunkAP
                 // dispatch(loginActions.setLoggedIn({value: true}));
                 return {value: true}
             } else {
-                handleServerAppError(res.data, dispatch);
+                // handleServerAppError(res.data, dispatch);
                 return rejectWithValue(null)
             }
     } catch (e: any) {

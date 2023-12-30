@@ -4,7 +4,7 @@ import { FullInput } from "./FullInput";
 import { EditableSpan } from "./EditableSpan";
 import s from "./todolist.module.css";
 import { useSelector } from "react-redux";
-import { AppStoreType } from "../store/store";
+import { AppRootStateType } from "../store/store";
 import {  TaskMainType, taskThunks } from "../reducers/TaskReducer";
 import { Task } from "./Task";
 import { ButtonFilter } from "./ButtonFilter";
@@ -27,7 +27,7 @@ type PropsType = {
 
 const Todolist = memo((props: PropsType) => {
     const dispatch = useAppDispatch();
-    const tasks = useSelector<AppStoreType, TaskMainType>((state) => state.tasks);
+    const tasks = useSelector<AppRootStateType, TaskMainType>((state) => state.tasks);
 
     useEffect(() => {
         dispatch(taskThunks.fetchTasks(props.todolistId));
