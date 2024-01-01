@@ -7,7 +7,7 @@ import {
     TodolistsMainType, todolistThunks
 } from "../reducers/TodolistReducer";
 import Paper from "@mui/material/Paper";
-import Todolist from "./Todolist";
+import Todolist from "./todolist/Todolist";
 import { useSelector } from "react-redux";
 import { AppRootStateType } from "../store/store";
 import { taskThunks } from "../reducers/TaskReducer";
@@ -39,6 +39,10 @@ export const TodolistList = () => {
         [dispatch],
     );
 
+    const changeFilter = (todolistId: string, value: FilterValuesType) => {
+        dispatch(todolistActions.changeFilter({ todolistId, value }));
+    };
+
     const addTodolist = useCallback(
         (title: string) => {
             dispatch(todolistThunks.createTodolist({title}));
@@ -46,12 +50,6 @@ export const TodolistList = () => {
         [dispatch],
     );
 
-    const changeFilter = useCallback(
-        (todolistId: string, value: FilterValuesType) => {
-            dispatch(todolistActions.changeFilter({todolistId, value}));
-        },
-        [dispatch],
-    );
 
     const deleteTodolist = useCallback(
         (todolistId: string) => {
