@@ -1,5 +1,5 @@
 import { authAPI } from "../api/auth-api";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from "../utils/createAppAsyncThunk";
 import { ResultCode } from "../utils/enums";
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
@@ -29,6 +29,29 @@ export const slice = createSlice({
             .addCase(initializeApp.fulfilled, (state, action) => {
                 state.initialized = action.payload.value
             })
+            .addMatcher(
+                isPending,
+                (state, action) => {
+                    state.status = 'loading'
+                }
+            )
+            .addMatcher(
+                isFulfilled,
+                (state, action) => {
+                    state.status = 'succeeded'
+                }
+            )
+            .addMatcher(
+                isRejected,
+                (state, action: any) => {
+                    state.status = 'failed'
+                    if (action.payload) {
+                        state.error = action.payload.messages[0]
+                    } else {
+                        state.error = action.error.message ? action.error.message : 'Some error occurred'
+                    }
+                }
+            )
     }
 })
 

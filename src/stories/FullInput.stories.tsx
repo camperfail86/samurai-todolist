@@ -22,7 +22,7 @@ type Story = StoryObj<typeof FullInput>;
 
 export const FullInputStory: Story = {
     args: {
-        callback: action("Button clicked inside form"),
+        // callback: action("Button clicked inside form"),
     },
 };
 
@@ -81,5 +81,5 @@ const FullInputExample = memo((props: FullInputType) => {
 });
 
 export const FullInputStoryError: Story = {
-    render: () => <FullInputExample callback={action("Button clicked inside form")} />,
+    // render: () => <FullInputExample callback={action("Button clicked inside form")} />,
 };

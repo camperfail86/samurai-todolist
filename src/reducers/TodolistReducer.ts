@@ -93,27 +93,20 @@ export type TodolistsMainType = TodolistType & {
 // };
 
 const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>('todolists/fetchTodolist', async (arg, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
-    dispatch(appActions.setStatus({ status: "loading" }));
-    try {
+    // const {dispatch, rejectWithValue} = thunkAPI
+    // dispatch(appActions.setStatus({ status: "loading" }));
+    // try {
         const res = await todolistAPI.getTodo()
         // dispatch(todolistActions.setTodolist({ todolists: res.data }));
         // dispatch(appActions.setStatus({ status: "succeeded" }));
-        console.log(res.data)
         return {todolists: res.data};
-    } catch (e: any) {
-        handleServerAppError(e, dispatch);
+    // } catch (e: any) {
+    //     handleServerAppError(e, dispatch);
         // dispatch(appActions.setStatus({ status: "failed" }));
-        return rejectWithValue(null)
-    } finally {
-        dispatch(appActions.setStatus({ status: "succeeded" }));
-    }
-
-        // .then((todos) => {
-        //     for (let i = 0; i < todos.length; i++) {
-        //         dispatch(taskThunks.fetchTasks(todos[i].id));
-        //     }
-        // })
+        // return rejectWithValue(null)
+    // } finally {
+    //     dispatch(appActions.setStatus({ status: "succeeded" }));
+    // }
 })
 
 
@@ -140,24 +133,24 @@ const createTodolist = createAppAsyncThunk<{ todolist: TodolistType }, { title: 
     "todolist/createTodolist",
     async (arg, thunkAPI) => {
         const { dispatch, rejectWithValue } = thunkAPI;
-        dispatch(appActions.setStatus({ status: "loading" }));
-        try {
+        // dispatch(appActions.setStatus({ status: "loading" }));
+        // try {
             const res = await todolistAPI.createTodo(arg.title);
             if (res.data.resultCode === ResultCode.success) {
-                dispatch(appActions.setStatus({ status: "succeeded" }));
+                // dispatch(appActions.setStatus({ status: "succeeded" }));
                 console.log(res.data.data.item);
                 return { todolist: res.data.data.item };
             } else {
                 if (res.data.messages.length) {
                     dispatch(appActions.setError({ error: res.data.messages[0] }));
                 }
-                dispatch(appActions.setStatus({ status: "failed" }));
-                return rejectWithValue(null);
+                // dispatch(appActions.setStatus({ status: "failed" }));
+                return rejectWithValue(res.data);
             }
-        } catch (e: any) {
-            handleServerNetworkError(e, dispatch);
-            return rejectWithValue(null);
-        }
+        // } catch (e: any) {
+        //     handleServerNetworkError(e, dispatch);
+            // return rejectWithValue(null);
+        // }
     },
 );
 

@@ -1,7 +1,7 @@
 import { authAPI } from "../api/auth-api";
 import { LoginType } from "../features/login/Login";
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { appActions, appThunks } from "./AppReducer";
 import { todolistActions } from "./TodolistReducer";
 import { createAppAsyncThunk } from "../utils/createAppAsyncThunk";
@@ -19,17 +19,21 @@ const slice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(login.fulfilled, (state, action)=> {
-                state.isLoggedIn = action.payload.value
-            })
-            .addCase(logout.fulfilled, (state, action)=> {
-                state.isLoggedIn = action.payload.value
-            })
-            .addCase(appThunks.initializeApp.fulfilled, (state, action) => {
-                state.isLoggedIn = action.payload.value
-            })
+            // .addCase(login.fulfilled, (state, action)=> {
+            //     state.isLoggedIn = action.payload.value
+            // })
+            // .addCase(logout.fulfilled, (state, action)=> {
+            //     state.isLoggedIn = action.payload.value
+            // })
+            // .addCase(appThunks.initializeApp.fulfilled, (state, action) => {
+            //     state.isLoggedIn = action.payload.value
+            // })
             .addCase(appThunks.initializeApp.rejected, (state, action) => {
                 state.isLoggedIn = false
+            })
+            .addMatcher(isAnyOf(loginThunks.login.fulfilled, loginThunks.logout.fulfilled, appThunks.initializeApp.fulfilled),
+                (state, action: PayloadAction<{value: boolean}>)=> {
+                state.isLoggedIn = action.payload.value
             })
     }
 })

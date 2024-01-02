@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BaseResponseType } from "../utils/commons.types";
 
 export const instance = axios.create({
     withCredentials: true,
@@ -13,7 +14,7 @@ export const todolistAPI = {
         return instance.get<TodolistType[]>(`/todo-lists`);
     },
     createTodo(title: string) {
-        return instance.post<ResponseType<{ item: TodolistType }>>(`/todo-lists`, {
+        return instance.post<BaseResponseType<{ item: TodolistType }>>(`/todo-lists`, {
             title: title,
         });
     },

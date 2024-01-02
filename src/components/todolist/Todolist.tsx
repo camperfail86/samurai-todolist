@@ -39,7 +39,7 @@ const Todolist = memo((props: PropsType) => {
 
     const addTaskCallback = useCallback(
         (title: string) => {
-            dispatch(taskThunks.addTask({todolistId: props.todolistId, title}));
+            return dispatch(taskThunks.addTask({todolistId: props.todolistId, title})).unwrap();
         },
         [props.todolistId, dispatch],
     );
@@ -69,3 +69,5 @@ const Todolist = memo((props: PropsType) => {
 });
 
 export default Todolist;
+
+

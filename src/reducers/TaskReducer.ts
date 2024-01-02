@@ -212,7 +212,7 @@ export const changeIsDone = createAppAsyncThunk<
     const model: UpdateTaskModelType = {
         title: task.title,
         description: task.description,
-        status: arg.status,
+        status: status,
         priority: task.priority,
         startDate: task.startDate,
         deadline: task.deadline,

@@ -2,6 +2,7 @@ import React, { ChangeEvent, KeyboardEvent, memo, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import todolist from "./todolist/Todolist";
+import { ResultCode } from "../utils/enums";
 
 const inputStyle = {
     maxHeight: "25px",
@@ -18,7 +19,7 @@ const btnStyle = {
 };
 
 export type FullInputType = {
-    callback: (title: string) => void;
+    callback: (title: string) => Promise<unknown>;
     disabled?: boolean;
 };
 export const FullInput = memo((props: FullInputType) => {
@@ -28,8 +29,12 @@ export const FullInput = memo((props: FullInputType) => {
         if (e.key === "Enter") {
             if (title.trim() !== "") {
                 setError(false);
-                props.callback(title);
-                setTitle("");
+                props.callback(title)
+                    .then((res) => {
+                        setTitle("");
+                    })
+                    .catch((e) => {
+                    });
             } else {
                 setError(true);
             }
@@ -39,8 +44,12 @@ export const FullInput = memo((props: FullInputType) => {
     const onClickHandler = () => {
         if (title.trim() !== "") {
             setError(false);
-            props.callback(title);
-            setTitle("");
+            props.callback(title)
+                .then(() => {
+                    setTitle("");
+                })
+                .catch((e) => {
+                });
         } else {
             setError(true);
         }
