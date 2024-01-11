@@ -12,22 +12,9 @@ const slice = createSlice({
     initialState: {
         isLoggedIn: true
     },
-    reducers: {
-        // setLoggedIn: (state, action: PayloadAction<{value: boolean}>) => {
-        //     state.isLoggedIn = action.payload.value
-        // }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
-            // .addCase(login.fulfilled, (state, action)=> {
-            //     state.isLoggedIn = action.payload.value
-            // })
-            // .addCase(logout.fulfilled, (state, action)=> {
-            //     state.isLoggedIn = action.payload.value
-            // })
-            // .addCase(appThunks.initializeApp.fulfilled, (state, action) => {
-            //     state.isLoggedIn = action.payload.value
-            // })
             .addCase(appThunks.initializeApp.rejected, (state, action) => {
                 state.isLoggedIn = false
             })

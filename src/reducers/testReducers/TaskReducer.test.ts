@@ -1,4 +1,6 @@
 import {
+    taskActions,
+    TaskMainType, taskThunks
     // addTaskAC,
     // addTasksArrayNullAC,
     // changeIsDoneAC,
@@ -19,102 +21,102 @@ import {
     // TodolistsMainType,
 } from "../TodolistReducer";
 import { v1 } from "uuid";
+import { TaskStatuses } from "../../utils/enums";
 
-test("correct task should be deleted from correct array", () => {
-    // const startState: TaskMainType = {
-    //     todolistId1: [
-    //         {
-    //             id: "1",
-    //             title: "HTML&CSS",
-    //             todoListId: "todolistID1",
-    //             status: TaskStatuses.Completed,
-    //             startDate: "",
-    //             priority: 1,
-    //             addedDate: "",
-    //             deadline: "",
-    //             order: 1,
-    //             description: "",
-    //             entityStatus: "idle",
-    //         },
-    //         {
-    //             id: "2",
-    //             title: "JS",
-    //             todoListId: "todolistID2",
-    //             status: TaskStatuses.Completed,
-    //             startDate: "",
-    //             priority: 1,
-    //             addedDate: "",
-    //             deadline: "",
-    //             order: 1,
-    //             description: "",
-    //             entityStatus: "idle",
-    //         },
-    //     ],
-    //     todolistId2: [
-    //         {
-    //             id: "1",
-    //             title: "MILK",
-    //             todoListId: "todolistID2",
-    //             status: TaskStatuses.Completed,
-    //             startDate: "",
-    //             priority: 1,
-    //             addedDate: "",
-    //             deadline: "",
-    //             order: 1,
-    //             description: "",
-    //             entityStatus: "idle",
-    //         },
-    //         {
-    //             id: "2",
-    //             title: "COFFEE",
-    //             todoListId: "todolistID2",
-    //             status: TaskStatuses.Completed,
-    //             startDate: "",
-    //             priority: 2,
-    //             addedDate: "",
-    //             deadline: "",
-    //             order: 2,
-    //             description: "",
-    //             entityStatus: "idle",
-    //         },
-    //     ],
-    // };
+// test("correct task should be deleted from correct array", () => {
+//     const startState: TaskMainType = {
+//         todolistId1: [
+//             {
+//                 id: "1",
+//                 title: "HTML&CSS",
+//                 todoListId: "todolistID1",
+//                 status: TaskStatuses.Completed,
+//                 startDate: "",
+//                 priority: 1,
+//                 addedDate: "",
+//                 deadline: "",
+//                 order: 1,
+//                 description: "",
+//                 entityStatus: "idle",
+//             },
+//             {
+//                 id: "2",
+//                 title: "JS",
+//                 todoListId: "todolistID2",
+//                 status: TaskStatuses.Completed,
+//                 startDate: "",
+//                 priority: 1,
+//                 addedDate: "",
+//                 deadline: "",
+//                 order: 1,
+//                 description: "",
+//                 entityStatus: "idle",
+//             },
+//         ],
+//         todolistId2: [
+//             {
+//                 id: "1",
+//                 title: "MILK",
+//                 todoListId: "todolistID2",
+//                 status: TaskStatuses.Completed,
+//                 startDate: "",
+//                 priority: 1,
+//                 addedDate: "",
+//                 deadline: "",
+//                 order: 1,
+//                 description: "",
+//                 entityStatus: "idle",
+//             },
+//             {
+//                 id: "2",
+//                 title: "COFFEE",
+//                 todoListId: "todolistID2",
+//                 status: TaskStatuses.Completed,
+//                 startDate: "",
+//                 priority: 2,
+//                 addedDate: "",
+//                 deadline: "",
+//                 order: 2,
+//                 description: "",
+//                 entityStatus: "idle",
+//             },
+//         ],
+//     };
     //
-    // const action = removeTaskAC("todolistId2", "2");
+    // const action = taskThunks.deleteTask({todolistId: "todolistId2", taskId: "2"});
+    // const endState = taskThunks(startState, action);
     //
-    // const endState = TaskReducer(startState, action);
-    //
-    // expect(endState).toEqual({
-    //     todolistId1: [
-    //         {
-    //             id: "1",
-    //             title: "HTML&CSS",
-    //             todoListId: "todolistID1",
-    //             status: TaskStatuses.Completed,
-    //             startDate: "",
-    //             priority: 1,
-    //             addedDate: "",
-    //             deadline: "",
-    //             order: 1,
-    //             description: "",
-    //         },
-    //     ],
-    //     todolistId2: [
-    //         {
-    //             id: "1",
-    //             title: "MILK",
-    //             todoListId: "todolistID2",
-    //             status: TaskStatuses.Completed,
-    //             startDate: "",
-    //             priority: 1,
-    //             addedDate: "",
-    //             deadline: "",
-    //             order: 1,
-    //             description: "",
-    //         },
-    //     ],
-    // });
-});
+//     expect(endState).toEqual({
+//         todolistId1: [
+//             {
+//                 id: "1",
+//                 title: "HTML&CSS",
+//                 todoListId: "todolistID1",
+//                 status: TaskStatuses.Completed,
+//                 startDate: "",
+//                 priority: 1,
+//                 addedDate: "",
+//                 deadline: "",
+//                 order: 1,
+//                 description: "",
+//             },
+//         ],
+//         todolistId2: [
+//             {
+//                 id: "1",
+//                 title: "MILK",
+//                 todoListId: "todolistID2",
+//                 status: TaskStatuses.Completed,
+//                 startDate: "",
+//                 priority: 1,
+//                 addedDate: "",
+//                 deadline: "",
+//                 order: 1,
+//                 description: "",
+//             },
+//         ],
+//     });
+// });
 
 // test("correct task should be added to correct array", () => {
 //     // const startState: TaskMainType = {

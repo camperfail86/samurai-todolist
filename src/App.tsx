@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import "./App.css";
-import IconButton from "@mui/material/IconButton";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
 import { AppRootStateType } from "./store/store";
 import { useAppDispatch } from "./hooks/hooks";
@@ -18,14 +16,6 @@ import { TodolistList } from "./components/TodolistList";
 import { Login } from "./features/login/Login";
 import CircularProgress from "@mui/material/CircularProgress";
 import { loginThunks } from "./reducers/LoginReducer";
-
-const loaderStyle = {
-    position: "absolute",
-};
-
-const boxStyle = {
-    position: "relative",
-};
 
 function App() {
     const dispatch = useAppDispatch();
@@ -49,13 +39,10 @@ function App() {
         <BrowserRouter>
             <div className="App">
                 <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static">
+                    <AppBar position="static" style={{backgroundColor: 'black'}}>
                         <Toolbar>
-                            <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                                <MenuIcon />
-                            </IconButton>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                News
+                                TODOLIST
                             </Typography>
                             {isLoggedIn ? (
                                 <Button color="inherit" onClick={logoutHandler}>

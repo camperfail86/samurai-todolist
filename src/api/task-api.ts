@@ -1,4 +1,4 @@
-import { instance, ResponseType, TodolistType } from "./todolist-api";
+import { instance, ResponseType } from "./todolist-api";
 import { StatusType } from "../reducers/AppReducer";
 import { TaskStatuses } from "../utils/enums";
 

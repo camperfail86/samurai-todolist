@@ -19,14 +19,6 @@ const paperStyle = {
     padding: "10px 15px",
 };
 
-type TodolistListType = {
-    addTodolist: (title: string) => void;
-    changeFilter: (todolistId: string, value: FilterValuesType) => void;
-    changeIsDone: (status: TaskStatuses, todolistId: string, id: string) => void;
-    editSpanTodo: (title: string, todolistId: string) => void;
-    deleteTodolist: (todolistId: string) => void;
-};
-
 export const TodolistList = () => {
     const todolists = useSelector<AppRootStateType, Array<TodolistsMainType>>((state) => state.todolists);
     const dispatch = useAppDispatch();

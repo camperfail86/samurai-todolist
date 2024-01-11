@@ -1,6 +1,5 @@
 import Button from "@mui/material/Button";
 import React, { memo, useCallback } from "react";
-import { FilterValuesType } from "../reducers/TodolistReducer";
 
 type ButtonPropsType = {
     name: string;

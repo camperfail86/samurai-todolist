@@ -1,7 +1,6 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { ButtonFilter } from "../ButtonFilter";
-import { FilterValuesType, todolistActions } from "../../reducers/TodolistReducer";
-import { useAppDispatch } from "../../hooks/hooks";
+import { FilterValuesType } from "../../reducers/TodolistReducer";
 
 type PropsType = {
     todolistId: string;
@@ -21,7 +20,6 @@ export const FilterTaskButtons = (props: PropsType) => {
                 variant={props.filter === "all" ? "outlined" : "text"}
                 name="All"
                 color="secondary"
-                // callback={()=>changeFilter(props.todolistId, 'all')}
                 callback={()=>changeTodolistFilter('all')}
             />
             <ButtonFilter
@@ -29,14 +27,12 @@ export const FilterTaskButtons = (props: PropsType) => {
                 name="Active"
                 color="secondary"
                 callback={()=>changeTodolistFilter('active')}
-                // callback={()=>changeFilter(props.todolistId, 'active')}
             />
             <ButtonFilter
                 variant={props.filter === "completed" ? "outlined" : "text"}
                 name="Completed"
                 color="secondary"
                 callback={()=>changeTodolistFilter('completed')}
-                // callback={()=>changeFilter(props.todolistId, 'completed')}
             />
         </div>
     );

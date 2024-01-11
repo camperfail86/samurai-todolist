@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import s from "../todolist.module.css";
 import { Task } from "../Task";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { TaskStatuses } from "../../utils/enums";
-import { TaskType } from "../../api/task-api";
-import { TaskMainType, taskThunks } from "../../reducers/TaskReducer";
-import { useAppDispatch } from "../../hooks/hooks";
+import { TaskMainType } from "../../reducers/TaskReducer";
 import { FilterValuesType } from "../../reducers/TodolistReducer";
 
 type Props = {

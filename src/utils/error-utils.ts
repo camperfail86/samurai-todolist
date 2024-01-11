@@ -1,6 +1,5 @@
 import { ResponseType } from "../api/todolist-api";
 import { Dispatch } from "redux";
-import { loginActions } from "../reducers/LoginReducer";
 import { appActions } from "../reducers/AppReducer";
 import axios from "axios";
 

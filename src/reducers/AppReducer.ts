@@ -1,8 +1,8 @@
 import { authAPI } from "../api/auth-api";
-import { createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from "../utils/createAppAsyncThunk";
 import { ResultCode } from "../utils/enums";
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
+import {  handleServerNetworkError } from "../utils/error-utils";
 
 export type StatusType = "idle" | "loading" | "succeeded" | "failed";
 
@@ -52,6 +52,9 @@ export const slice = createSlice({
                     }
                 }
             )
+            .addMatcher(isAnyOf(appThunks.initializeApp.fulfilled, appThunks.initializeApp.rejected), (state, action) => {
+                state.initialized = true;
+            });
     }
 })
 
@@ -60,17 +63,14 @@ const initializeApp = createAppAsyncThunk('app/initializeApp', async (_, thunkAP
     try {
         const res = await authAPI.me()
             if (res.data.resultCode === ResultCode.success) {
-                // dispatch(loginActions.setLoggedIn({value: true}));
                 return {value: true}
             } else {
-                // handleServerAppError(res.data, dispatch);
                 return rejectWithValue(null)
             }
     } catch (e: any) {
         handleServerNetworkError(e, dispatch);
         return rejectWithValue(null);
     } finally {
-        dispatch(appActions.setInitialized({value: true}));
         dispatch(appActions.setStatus({ status: "succeeded" }));
     }
 })

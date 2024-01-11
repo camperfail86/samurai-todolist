@@ -1,13 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, memo, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import todolist from "./todolist/Todolist";
-import { ResultCode } from "../utils/enums";
-
-const inputStyle = {
-    maxHeight: "25px",
-    minHeight: "25px",
-};
 
 const btnStyle = {
     maxWidth: "40px",

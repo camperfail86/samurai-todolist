@@ -1,14 +1,10 @@
-import { AnyAction, combineReducers } from "redux";
-import { TaskActionType, taskReducer } from "../reducers/TaskReducer";
-import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { configureStore, createAsyncThunk } from "@reduxjs/toolkit";
+import { taskReducer } from "../reducers/TaskReducer";
+import { configureStore } from "@reduxjs/toolkit";
 import { loginReducer } from "../reducers/LoginReducer";
 import { appReducer } from "../reducers/AppReducer";
-import { TodolistActionType, todolistReducer } from "../reducers/TodolistReducer";
+import { todolistReducer } from "../reducers/TodolistReducer";
 
-// export type AppActionType = TodolistActionType | TaskActionType;
 export type AppDispatchType = typeof store.dispatch;
-// export type AppStoreType = ReturnType<typeof store.getState>;
 export type AppRootStateType = ReturnType<typeof store.getState>
 
 export const store = configureStore({
@@ -20,5 +16,3 @@ export const store = configureStore({
     }
 });
 
-// @ts-ignore
-window.store = store;
