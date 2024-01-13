@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/samurai-todolist/static/css/main.afa08978.css",
-    "main.js": "/samurai-todolist/static/js/main.5157dd55.js",
+    "main.js": "/samurai-todolist/static/js/main.538bfb79.js",
     "index.html": "/samurai-todolist/index.html"
   },
   "entrypoints": [
     "static/css/main.afa08978.css",
-    "static/js/main.5157dd55.js"
+    "static/js/main.538bfb79.js"
   ]
 }
