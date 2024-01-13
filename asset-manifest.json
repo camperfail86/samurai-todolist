@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.afa08978.css",
-    "main.js": "/static/js/main.18519edb.js",
-    "index.html": "/index.html"
+    "main.css": "/samurai-todolist/static/css/main.afa08978.css",
+    "main.js": "/samurai-todolist/static/js/main.18519edb.js",
+    "index.html": "/samurai-todolist/index.html"
   },
   "entrypoints": [
     "static/css/main.afa08978.css",
