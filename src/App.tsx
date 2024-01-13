@@ -11,7 +11,7 @@ import { useAppDispatch } from "./hooks/hooks";
 import { ErrorSnackBar } from "./components/common/ErrorSnackBar";
 import LinearProgress from "@mui/material/LinearProgress";
 import { appThunks, StatusType } from "./reducers/AppReducer";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { TodolistList } from "./components/TodolistList";
 import { Login } from "./features/login/Login";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -36,7 +36,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div className="App">
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar position="static" style={{backgroundColor: 'black'}}>
@@ -60,7 +60,7 @@ function App() {
                 </Routes>
                 <ErrorSnackBar />
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
